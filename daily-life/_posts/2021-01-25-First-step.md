@@ -121,12 +121,12 @@ sitemap: false
        이를 고치기 위해 먼저 \_config.yml 파일과 Gemfile을 살펴봤다.  
        ~~사실 아래의 과정들은 HydeJack Install 설명을 읽어보고 미리 했었어야하는 과정인데 읽어보지 않고 진행했었다.~~
 
-      ![config.yml파일](/assets/img/Get-Start/config.png)
+      ![config파일수정](https://github.com/Learning-Ant/learning-ant.github.io/blob/master/assets/img/Get-Start/config.PNG)
       {:.lead loading="lazy" align="center"}
       \_config.yml파일의 #Theme부분에 `remote_theme: hydecorp/hydejack@v9.0.0-rc.6`을 추가해준다.
       {:.figcaption}
 
-      ![Gemfile파일](/assets/img/Get-Start/Gemfile.png)
+      ![Gem파일수정](https://github.com/Learning-Ant/learning-ant.github.io/blob/master/assets/img/Get-Start/Gemfile.PNG)
       {:.lead loading="lazy" align="center"}
       가장 처음에는 `gem "jekyll"`이 부분 뒤에 최소버전 조건이 있다. 최소 버전보다 높은 버전의 jekyll을 깔아도 계속적으로 충돌이 일어나서 아예 해당 부분의 최소버전 조건을 삭제했다.
       {:.figcaption}
@@ -135,7 +135,7 @@ sitemap: false
 
 6.  이제 다시 위의 `bundle exec jekyll serve`를 입력하면 아래와 같은 화면이 나올 것이다.
 
-    ![성공!](/assets/img/Get-Start/success.png)
+    ![성공!](https://github.com/Learning-Ant/learning-ant.github.io/blob/master/assets/img/Get-Start/success.PNG)
     {:.lead loading="lazy" align="center"}
     실제로 이 화면이 떴을때 필자는 입에서 저절로 ~~욕이~~ 탄성이 나왔다.
     {:.figcaption}
