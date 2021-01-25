@@ -2,16 +2,13 @@
 # Must be the same as `author` in `_config.yml`.
 # Change `author1` to your shortname.
 author1:
-  name: <SeaSeong> <Park>
-  email: <mail@domain.tld>
+  name: JeaSeong Park
+  email: jspark9206@naver.com
 
   # Used at the bottom of each page and at the top of the `about` layout
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
   about: |
     Hi. I'm study about Web develope.
-
-
-    Open `_data/authors.yml` to edit this text.
 
   # This photo will be used in the about section
   picture:
@@ -26,8 +23,8 @@ author1:
   # Rearrange to change the order in which they appear
   social:
     # twitter:         <username>
-    github: <Learning-Ant>
-    email: <jspark9206@naver.com>
+    github: Learning-Ant
+    email: jspark9206@naver.com
     # rss:             https://<url>/feed.xml
     # facebook:        <username>
     # google:          <number>
