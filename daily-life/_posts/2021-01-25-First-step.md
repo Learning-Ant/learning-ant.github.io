@@ -137,7 +137,7 @@ sitemap: false
 
     ![성공!](/assets/img/Get-Start/success.png)
     {:.lead loading="lazy" align="center"}
-    실제로 이 화면이 떴을때 필자는 입에서 저절로 ~~욕이~~ 탄성이 나왔다.
+    실제로 이 화면이 떴을때 필자는 입에서 저절로 탄성이 나왔다.
     {:.figcaption}
 
 7.  이제 https://127.0.0.1:4000 혹은 https://localhost:4000 으로 접속해보자.

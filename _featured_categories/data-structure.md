@@ -3,14 +3,13 @@
 layout: list
 
 # The title of the tag's page.
-title: Daily life
+title: Data Structure
 
 # The name of the tag, used in a post's front matter (e.g. tags: [<slug>]).
-slug: daily-life
+slug: Data Structure
 
 # (Optional) Write a short (~150 characters) description of this featured tag.
-description: >
-  수 많은 하루들이 눈처럼 쌓이고, 마침내 온 세상에 자신의 색을 발한다.
+description: 자료구조를 공부하고 정리하는 곳
 
 # (Optional) You can disable grouping posts by date.
 # no_groups: true
