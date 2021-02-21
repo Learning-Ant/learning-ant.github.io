@@ -19,12 +19,40 @@ sitemap: false
 
 ### Key Point
 
-- Order -> Data Structure 안의 데이터들의 순서가 보장되는지
-- Unique -> 중복데이터가 들어갈 수 있는지
-- Search -> 검색의 효율성이 어떤지
-- Modification ->수정할 때 얼마나 효율적인지
+|      Key       | Content                 |
+| :------------: | :---------------------- |
+|    `Order`     | Data들의 순서 보장 여부 |
+|    `Unique`    | 중복데이터 가능 여부    |
+|    `Search`    | 검색의 효율성           |
+| `Modification` | 수정의 효율성           |
 
 ### 자료구조의 종류
 
 ![Kind-of-Data-structure](/assets/img/data-structure/data-structure-kindof.png)
 {:.lead loading="lazy" align="center"}
+
+- 선형구조
+
+  > 크게 리스트, 스택, 큐로 나눌 수 있다.
+
+  1. **리스트**
+     - Linked List
+     - Double Linked List
+     - Circular Linked List
+     - Array List
+  2. **스택**
+     - FILO(First In, Last Out)
+  3. **큐**
+     - FIFO(First In, First Out)
+
+- 비선형구조
+  > 트리, 그래프 등으로 나눌 수 있다.
+  1. **트리**
+     - 일반 트리
+     - 이진 트리
+     - B 트리
+  2. **그래프**
+  3. **Set**
+     - 집합의 개념. 자료들의 중복이 없음.
+  4. **Map**
+     - Key와 Value를 Paring하여 저장하는 구조.

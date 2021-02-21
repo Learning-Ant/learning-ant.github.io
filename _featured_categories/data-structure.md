@@ -6,7 +6,7 @@ layout: list
 title: Data Structure
 
 # The name of the tag, used in a post's front matter (e.g. tags: [<slug>]).
-slug: Data Structure
+slug: data-structure
 
 # (Optional) Write a short (~150 characters) description of this featured tag.
 description: 자료구조를 공부하고 정리하는 곳
