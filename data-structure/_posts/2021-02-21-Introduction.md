@@ -28,7 +28,7 @@ sitemap: false
 
 ### 자료구조의 종류
 
-![Kind-of-Data-structure](/assets/img/data-structure/data-structure-kindof.png)
+![Kind-of-Data-structure](/assets/img/data-structure/data-structure-kindof.PNG)
 {:.lead loading="lazy" align="center"}
 
 - 선형구조
