@@ -57,7 +57,7 @@ sitemap: false
 
 2.  만약 설치가 모두 끝났다면 아래 화면이 나올 것이다.
 
-    ![Install_Ruby](/assets/img/Get-Start/Install_Ruby2.png)
+    ![Install_Ruby](/assets/img/Get-Start/Install_Ruby2.PNG)
     {:.lead loading="lazy" align="center"}
 
     - 이제 여기서 **숫자 1**을 입력해 주고 엔터!
@@ -100,7 +100,7 @@ sitemap: false
     ![Install_Jekyll](/assets/img/Get-Start/Install_Jekyll1.png)
     {:.lead loading="lazy" align="center"}  
 
-    ![Install_Jekyll](/assets/img/Get-Start/Install_Jekyll2.png)
+    ![Install_Jekyll](/assets/img/Get-Start/Install_Jekyll2.PNG)
     {:.lead loading="lazy" align="center"}
     cmd와 같은 창이 뜬다.
     {:.figcaption}
