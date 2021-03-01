@@ -1,10 +1,11 @@
 ---
-layout: page
+layout: post
 title: First-step
 description: >
   쉬워보이는 일도 해보면 어렵다. 못할 것 같은 일도 시작 해 놓으면 이루어진다. - 채근담
 hide_description: true
 sitemap: false
+tag: [blog]
 ---
 
 # 시작은...
@@ -26,15 +27,15 @@ sitemap: false
 
 <br/>
 
-- [![Github](https://img.shields.io/badge/Github-Pages-181717?style=flat-square&logo=Github&logoColor=white)](https://pages.github.com/)  
+- [![Github](https://img.shields.io/badge/Github-Pages-181717?style=flat-square&logo=Github&logoColor=white)](https://pages.github.com/)
 
   *Github Pages*는 *Github Repository*를 이용해 자신만의 사이트를 만들 수 있도록 Github에서 제공하는 서비스라고 할 수 있다.
 
-- [![Jekyll](https://img.shields.io/badge/Jekyll-CC0000?style=flat-square&logo=Jekyll&logoColor=white)](http://jekyllrb-ko.github.io/)  
+- [![Jekyll](https://img.shields.io/badge/Jekyll-CC0000?style=flat-square&logo=Jekyll&logoColor=white)](http://jekyllrb-ko.github.io/)
 
   *Github Page*를 제작하는 일종의 프로그램인데, *Ruby*로 만들어져 있어 사용하려면 *Ruby*의 설치가 필수적이다. 꼭 이걸 설치해야하는 것인지 의문이 있었는데 사실 하나하나의 변경사항들을 로컬환경에서 즉각적으로 확인하기 위해서 사용하는 것 같다. 그냥 repository에 무한 commit하면서 확인해도.. 블로그를 꾸리는 것이 가능하긴 할 것 같다는 것이 내 생각이다. 아마 Jekyll을 붙잡고 있는 시간이 2일이상 지났었다면 포기하고 일단 repository로만 블로그 작성을 진행했지 않았을까..
 
-- [![Ruby](https://img.shields.io/badge/Ruby-CC342D?style=flat-square&logo=Ruby&logoColor=white)](https://www.ruby-lang.org/ko/)  
+- [![Ruby](https://img.shields.io/badge/Ruby-CC342D?style=flat-square&logo=Ruby&logoColor=white)](https://www.ruby-lang.org/ko/)
 
   *Jekyll*을 사용하기 위해 필수적으로 사용해야하는 '언어'이다.
 
@@ -98,7 +99,7 @@ sitemap: false
 5.  자 이제 본인의 로컬환경에서 하기 자신만의 블로그로 편집하기 위해 *Start Command Prompt with Ruby*를 켠다. 시작 메뉴에 있다.
 
     ![Install_Jekyll](/assets/img/Get-Start/Install_Jekyll1.png)
-    {:.lead loading="lazy" align="center"}  
+    {:.lead loading="lazy" align="center"}
 
     ![Install_Jekyll](/assets/img/Get-Start/Install_Jekyll2.PNG)
     {:.lead loading="lazy" align="center"}

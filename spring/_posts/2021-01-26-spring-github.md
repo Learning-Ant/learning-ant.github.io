@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: Remote Repository(Github)에 있는 프로젝트 Import하기
 description: >
   .gitignore를 설정하고 github에 자료를 올리면 .project파일이 없어 IDE가 프로젝트로 인식하지 못한다.  
@@ -12,8 +12,8 @@ related_posts:
 ## Spring-Tool-Suite에서 Import하기
 
 1. 먼저 프로젝트를 불러와서 저장할 폴더를 만듭니다.
-  저는 `SPRING0914/project/workspace`의 경로로 폴더를 생성했습니다.
-  이제 이 경로를 sts로 실행해줍니다.
+   저는 `SPRING0914/project/workspace`의 경로로 폴더를 생성했습니다.
+   이제 이 경로를 sts로 실행해줍니다.
 
 2. package explorer에서 우클릭 한 후 `import...` 을 선택합니다.
 
@@ -45,7 +45,7 @@ related_posts:
 ![step6](/assets/img/Remote/sts6.png)
 {:.lead width="800" align="center" loading="lazy"}
 
-8. 생성한 폴더를 선택해주고, 
+8. 생성한 폴더를 선택해주고,
 
 ![step7](/assets/img/Remote/sts7.png)
 {:.lead width="800" align="center" loading="lazy"}
@@ -56,7 +56,7 @@ related_posts:
 {:.lead width="800" align="center" loading="lazy"}
 
 10. 누르면 아래 화면처럼 import as general project가 선택되어 있고 가져올 수 있는 Working Tree목록이 나옵니다.
-딱히 바꿀 필요 없으니 그대로 Next를 눌러줍니다.
+    딱히 바꿀 필요 없으니 그대로 Next를 눌러줍니다.
 
 ![step9](/assets/img/Remote/sts9.png)
 {:.lead width="800" align="center" loading="lazy"}
@@ -67,7 +67,7 @@ related_posts:
 {:.lead width="800" align="center" loading="lazy"}
 
 12. 이제 project explorer에 아래처럼 프로젝트가 생성되는데 소스파일만 존재하기 때문에 maven 프로젝트로 인식하지 않습니다.  
-한 가지 과정을 거쳐 자동으로 설정들을 적용해 줄 수 있도록 합니다.
+    한 가지 과정을 거쳐 자동으로 설정들을 적용해 줄 수 있도록 합니다.
 
 ![step11](/assets/img/Remote/sts11.jpg)
 {:.lead width="800" align="center" loading="lazy"}
@@ -83,4 +83,3 @@ related_posts:
 {:.lead width="800" align="center" loading="lazy"}
 완성!
 {:.figcaption}
-

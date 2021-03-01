@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: 개요
 description: >
   자료구조의 시작
