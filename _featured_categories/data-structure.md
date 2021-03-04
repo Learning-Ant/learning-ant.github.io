@@ -1,13 +1,14 @@
 ---
 # Featured tags need to have either the `list` or `grid` layout (PRO only).
 layout: list
-
+type: category
 # The title of the tag's page.
 title: Data Structure
 
 # The name of the tag, used in a post's front matter (e.g. tags: [<slug>]).
 slug: data-structure
-
+sidebar: true
+order: 5
 # (Optional) Write a short (~150 characters) description of this featured tag.
 description: 자료구조를 공부하고 정리하는 곳
 

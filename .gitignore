@@ -40,12 +40,19 @@ validation-report.json
 # Folders to ignore
 node_modules
 vendor
+node_modules
+vendor
+.bundle
+
 .sass-cache
 .jekyll-metadata
 .jekyll-cache
 *.gem
+<<<<<<< HEAD
 _zip
 /stats.json
 
 /assets/js/*hydejack-*
 /_sass/*/__*__/*
+#<removed/js>
+#<removed/css>
