@@ -52,17 +52,19 @@ author:
 
 # Add links to the sidebar.
 
-#menu:
-#  - title: Daily Life
-#    url: /daily-life/
-#  - title: Spring
-#    url: /spring/
-#  - title: Java
-#    url: /java/
-#  - title: Data Structure
-#    url: /data-structure/
-#  - title: About
-#    url: /about/
+menu:
+  - title: Daily Life
+    url: /daily-life/
+  - title: Spring
+    url: /spring/
+  - title: Java
+    url: /java/
+  - title: Data Structure
+    url: /data-structure/
+  - title: About
+    url: /about/
+  - title: tags
+    url: /tags/
 
 
 # Add links to the footer.

@@ -4,6 +4,7 @@ layout: list
 type: category
 # The title of the tag's page.
 title: Daily life
+permalink: /daily-life/
 
 # The name of the tag, used in a post's front matter (e.g. tags: [<slug>]).
 slug: daily-life

@@ -4,7 +4,7 @@ layout: list
 type: category
 # The title of the tag's page.
 title: Data Structure
-
+permalink: /data-structure/
 # The name of the tag, used in a post's front matter (e.g. tags: [<slug>]).
 slug: data-structure
 sidebar: true
