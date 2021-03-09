@@ -61,6 +61,8 @@ menu:
     url: /java/
   - title: Data Structure
     url: /data-structure/
+  - title: Algorithm
+    url: /algorithm/
   - title: About
     url: /about/
   - title: tags
