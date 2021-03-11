@@ -1,10 +1,10 @@
 ---
 layout: list
 type: tag
-title: Java
-slug: java
+title: Python
+slug: python
 category: language
 sidebar: true
 description: >
-  Java
+  Python
 ---

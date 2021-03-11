@@ -57,8 +57,8 @@ menu:
     url: /daily-life/
   - title: Spring
     url: /spring/
-  - title: Java
-    url: /java/
+  - title: Language
+    url: /lang/
   - title: Data Structure
     url: /data-structure/
   - title: Algorithm
@@ -109,7 +109,7 @@ collections:
 # ---------------------------------------------------------------------------------------
 
 theme: jekyll-theme-hydejack
-remote_theme: hydecorp/hydejack@v9.0.0-rc.6
+remote_theme: hydecorp/hydejack@v9.1.2
 
 # Customizaton
 # ----------------------------------------------------------------------------------------

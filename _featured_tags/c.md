@@ -1,10 +1,10 @@
 ---
 layout: list
 type: tag
-title: Java
-slug: java
+title: C/C++
+slug: c
 category: language
 sidebar: true
 description: >
-  Java
+  C/C++
 ---
