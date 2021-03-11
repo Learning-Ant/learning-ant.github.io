@@ -7,7 +7,7 @@ hide_description: true
 sitemap: false
 date: 2021-03-11 19:20:00 +0900
 category: language
-tag: [c, language]
+tag: [c]
 ---
 
 # printf()와 scanf()함수에 대한 고찰
@@ -20,6 +20,7 @@ tag: [c, language]
 ### printf는 특수 문자(escape sequence) 출력이 가능하다.
 
 <center>
+
 |Escape Sequence|의미|
 |:---:|:---:|
 |\a|경고음 소리|
@@ -34,6 +35,7 @@ tag: [c, language]
 |\\|백슬래시|
 |\O__|8진수|
 |\xhh|16진수|
+
 </center>
 
 ### Escape Sequence의 필요성
@@ -53,9 +55,11 @@ int main(void)
 > 원하는대로 출력하기 위해서는 Escape Sequence를 사용해 아래와 같이 적어야 한다.
 
 <center>
-  ```c
-  printf(앞집 강아지가 짖는다. \"멍! 멍!\" 귀엽다.");
-  ```
+
+```c
+printf(앞집 강아지가 짖는다. \"멍! 멍!\" 귀엽다.");
+```
+
 </center>
 
 ### Format Specifier
@@ -63,6 +67,7 @@ int main(void)
 * printf의 f는 "formatted"를 의미한다.
 * 서식 지정 : 출력의 형태를 지정한다는 의미
 * 예시
+
 ```c
 #include <stdio.h>
 
@@ -82,11 +87,13 @@ int main(void)
 * '부동소수점 표현 방식'에 의한 출력
   * %e, %E : e와 E의 차이는 역시 위와 같이 표현방식의 차이이다.
   <br/>
+
   ```
   ex )
   3.1245e+2 ➡ $$ 3.1245 \times 10^2 $$
-  2.45e-4 ➡ $$ 2.45 \times 10^(-4) $$
+  2.45e-4 ➡ $$ 2.45 \times 10^{-4} $$
   ```
+
 * 소수점에 따라 표현방식을 선택하는 문자
   * %g, %G : 소수점 이하 6자리보다 많으면 %e, %E로, 적으면 %f로 표현
 * 필드 폭을 지정하여 출력하기
