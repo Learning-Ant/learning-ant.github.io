@@ -12,32 +12,36 @@ tag: [List,c]
 
 # 더블 링크드 리스트와 환형 링크드 리스트
 
-> 리스트 중의 하나인 링크드 리스트는 해석하자면 `연결해서 만드는 리스트`라는 의미가 된다. 그럼 어떤 것을 연결한 것일까?  
-> 리스트의 각 요소는 노드(Node)라고 부른다. 노드는 우리말로 `마디`라는 의미이다. 이 노드를 연결한 것이 바로 `Linked List`이다.
+> `Double Linked List`는 이중으로 연결된 리스트라는 의미이다. 이중으로 연결되어있다는 말의 의미는 한 노드에 다음 노드를 가리키는 포인터만 있는 것이 아닌
+> 현재 노드의 이전노드를 가리키는 포인터도 포함되어 있다는 것이다.
+> `Circular Linked List`는 환형으로 연결된 리스트라는 의미로, 헤드와 테일이 연결된 리스트이다.
 {:.note title="attention"}
 
-## C에서의 Linked List
+## Double Linked List
 
 ### Node
 
-> C 언어에서는 각각의 노드를 `구조체`로 구현한다. 이 `구조체 노드`는 아래와 같이 구현이 가능하다.
+> 바로 위에서 설명했 듯 일단 노드의 구조를 변경해야 한다. 이전 노드를 가리키는 포인터를 추가한다.
+{:.note title="attention"}
 
 ```c
 typedef struct tagNode
 {
     int Data;
     // 노드에 들어가는 데이터
+    struct Node * PrevNode;
+    // 이전 노드를 가리키는 포인터
     struct Node * NextNode;
     // 다음 노드를 가리키는 포인터
 } Node;
 ```
 
-&nbsp;&nbsp;아는 사람은 알테지만 Linked List는 Index로 접근이 불가능하다. 대신 다음 노드를 가리키는 포인터를 가짐으로써 다음 노드가 무엇인지 알 수 있다.
-이 포인터로 리스트의 노드 추가, 탐색, 삭제, 삽입 등이 가능한 것이다. 당연히 Index가 없으니 배열과 같은 Indexing이 불가능하다.
+&nbsp;&nbsp;이전 노드를 가리키는 포인터가 추가됨으로써 이제 단방향 탐색이 아닌 양방향 탐색이 가능해졌다.
+헤드에서 테일로만 갈 수 있는 것이 아닌 그 반대 방향으로도 탐색의 진행이 가능해졌다.
 
-### Linked List의 주요연산
+### Double Linked List의 주요연산
 
-> 기본적으로 링크드 리스트를 구축하고 링크드 리스트에 있는 자료를 사용하기 위해 필요한 연산은 다음 다섯가지이다.
+> Double Linked List의 주요 연산은 Linked List와 크게 다를 바가 없다. 단지 이전 노드를 처리하기 위한 구현이 추가 될 뿐이다.
 {:.note title="attention"}
 
 1. 노드 생성/소멸
@@ -48,41 +52,8 @@ typedef struct tagNode
 
 ### 노드의 생성/소멸
 
-> C언어를 배웠다면 프로그램이 구동될 때 어떤 메모리들이 있는지 어느정도는 알고 있을 것이다. 크게 정적 메모리인 `데이터 영역`이 있고, Stack 영역이라 불리는 `자동 메모리(Automatic Memory)`, Heap이라 불리는 `자유 저장소(Free Store)`가 있다.  
-> 데이터 영역은 Life Span이 프로그램 종료까지인 전역변수(Global Variable), 정적변수(Static Variable)가 저장되고, 자동메모리에는 지역변수, 자유 저장소는 동적 할당이 가능한 공간이다.  
-> 그렇다면 노드는 어떤 메모리에 저장해야 할까?
+> 노드 생성에서 PrevNode에 Null 을 대입하여 초기화하는 부분만 추가하면 끝이다.
 {:.note title="attention"}
-
-* 먼저 Stack에 저장하는 경우를 코드로 살펴보자.
-
-```c
-typedef struct tagNode
-{
-    int Data;
-    // 노드에 들어가는 데이터
-    struct Node * NextNode;
-    // 다음 노드를 가리키는 포인터
-} Node;
-
-Node* createNode(int newData)
-{
-    Node newNode;
-    // 지역변수이므로 자동메모리에 할당
-    newNode.Data = newData;
-    newNode.NextNode = NULL;
-
-    return &newNode;
-    // 노드가 새로 생성된 주소값을 반환하지만
-    // 지역변수는 scope에 의해 함수가 종료되는 순간 사라진다.
-}
-// 이 때 새로운 노드 포인터를 선언하고
-// 함수를 이용해 초기화하면 과연 어떻게 될까?
-Node* newNode = createNode(120);
-// 함수는 주소값을 반환하겠지만 해당 주소값에는 아무 데이터도 없을 것이다.
-```
-
-&nbsp;&nbsp;위의 예시로 우리는 Node를 어디에 할당해야할지 명확하게 알 수 있다. 노드는 `자유 저장소`, 즉 `Heap` 영역에 저장해야한다.
-그 Heap영역에 할당하기 위해 필요한 것이 `malloc()와 free()`이다. 아래의 코드를 살펴보자.
 
 ```c
 typedef int ElementType;
@@ -90,27 +61,28 @@ typedef struct tagNode
 {
     int Data;
     // 노드에 들어가는 데이터
+    struct Node * PrevNode;
+    // 이전 노드를 가리키는 포인터
     struct Node * NextNode;
     // 다음 노드를 가리키는 포인터
 } Node;
 
 // 노드 생성
-Node* SLL_CreateNode(ElementType NewData)
+Node* DLL_CreateNode(ElementType NewData)
 {
     Node* NewNode = (Node*)malloc(sizeof(Node));
-    // Heap 영역에 할당하고 Node형 포인터로 casting
-
+    
     NewNode->Data = NewData;
-    // Data로 인자값을 전달
     NewNode->NextNode = NULL;
-    // 다음 노드는 아직 무엇인지 모르니 Null 포인터로 초기화
-
+    NewNode->PrevNode = NULL;
+    // 이전 노드는 아직 무엇인지 모르지 Null 포인터로 초기화
+    
     return NewNode;
-    // 만든 Node(포인터)를 반환
 }
 
 // 노드 소멸
-void SLL_DestroyNode(Node* Node)
+// Linked List와 다른 점이 없다. 그저 소멸만 해주면 된다.
+void DLL_DestroyNode(Node* Node)
 {
     free(Node);
     // 인자로 받은 Node를 소멸
@@ -119,14 +91,13 @@ void SLL_DestroyNode(Node* Node)
 
 ### 노드 추가
 
-> 노드의 추가는 삽입과 달리 리스트의 가장 마지막 노드인 Tail 뒤에 새로운 노드를 연결하는 것을 의미한다.  
-> 즉, 리스트의 Head부터 시작해 Tail을 찾고 Tail의 멤버변수인 `Node* NextNode`에 인자로 전달된 새로운 노드를 대입하면 된다.
+> 노드의 추가 역시 PrevNode를 지정해주는 한 줄의 코드만 추가해주면 된다.
 {:.note title="attention"}
 
 * AppendNode() 구현
 
 ```c
-void SLL_AppendNode(Node** Head, Node* NewNode)
+void DLL_AppendNode(Node** Head, Node* NewNode)
 {
     // 헤드 노드가 NULL이면(없으면), 새로운 노드가 Head가 된다.
     if ( (*Head) == NULL )
@@ -142,22 +113,10 @@ void SLL_AppendNode(Node** Head, Node* NewNode)
             Tail = Tail->NextNode
         }
         Tail->NextNode = NewNode;
+        NewNode->PrevNode = Tail;
     }
 }
 ```
 
-&nbsp;&nbsp;구현은 되었고 이제 이를 어떻게 사용해야할까? 아래 예제로 살펴본다.
-
-```c
-Node* List = NULL;
-Node* NewNode = NULL;
-
-NewNode = SSL_CreateNode(11);
-SLL_AppendNode( &List, NewNode );
-
-NewNode = SSL_CreateNode(22);
-SLL_AppendNode( &List, NewNode);
-```
-
-> 첫 번째 매개변수로 전달해주는 것이 List의 주소값임을 유의하자.
+### 노드 탐색, 개수
 
