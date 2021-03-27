@@ -10,13 +10,13 @@ category: data-structure
 tag: [List,c]
 ---
 
-# List - Linked List
+# 싱글 링크드 리스트(Single Linked List)
 
 > 리스트 중의 하나인 링크드 리스트는 해석하자면 `연결해서 만드는 리스트`라는 의미가 된다. 그럼 어떤 것을 연결한 것일까?  
 > 리스트의 각 요소는 노드(Node)라고 부른다. 노드는 우리말로 `마디`라는 의미이다. 이 노드를 연결한 것이 바로 `Linked List`이다.
 {:.note title="attention"}
 
-## C에서의 Linked List
+## Single Linked List
 
 ### Node
 
@@ -282,7 +282,7 @@ void SLL_InsertAfter(Node* Current, Node* NewNode)
 ```c
 int SLL_GetNodeCount(Node* Head)
 {
-    int Count = 0;
+    unsigned int Count = 0;
     Node* Current = Head;
 
     while(Current != NULL)
@@ -297,7 +297,7 @@ int SLL_GetNodeCount(Node* Head)
 
 &nbsp;&nbsp;여기서 while의 조건문인 `Current != NULL`에서 `Current->NextNode != NULL`이 아닌 이유는 List에 있는 Node가 Head뿐일 때를 생각해보면 바로 알 수 있다.
 List에 Node가 Head뿐일 경우 Head의 NextNode는 NULL이며, 이로 인해 while문은 실행되지 않고 바로 Count를 return하게 된다.  
-그렇게 되면 Count는 `0`을 return하게 되므로 반례가 된다.
+그렇게 되면 Count는 0을 return하게 되므로 반례가 된다.
 
 ## 모듈화
 
@@ -435,7 +435,7 @@ Node* SLL_GetNodeAt(Node* Head, int Location)
 // 노드 Counting
 int SLL_GetNodeCount(Node* Head)
 {
-    int Count = 0;
+    unsigned int Count = 0;
     Node* Current = Head;
 
     while(Current != NULL)
@@ -500,7 +500,7 @@ int main(void)
     }
 
     // 모든 노드 제거
-    printf("\nDestroy List...\n\n);
+    printf("\nDestroy List...\n\n");
 
     for (i = 0; i < Count; i++)
     {
