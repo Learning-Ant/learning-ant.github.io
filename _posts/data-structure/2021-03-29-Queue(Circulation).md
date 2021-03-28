@@ -7,7 +7,7 @@ hide_description: true
 sitemap: false
 date: 2021-03-29 00:12:00 +0900
 category: data-structure
-tag: [queue],c]
+tag: [queue,c]
 ---
 
 # 큐(Queue)
