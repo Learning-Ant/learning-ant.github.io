@@ -172,4 +172,212 @@ Node* LLS_Pop(LinkedListStack* Stack)
 }
 ```
 
+## 모듈화
 
+### LinkedListStack.h
+
+```c
+#ifndef LINKEDLIST_STACK_H
+#define LINKEDLIST_STACK_H
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct tagNode
+{
+    char* Data;
+    struct tagNode* NextNode;
+} Node;
+
+typedef struct tagLinkedListStack
+{
+    Node* List;
+    Node* Top;
+} LinkedListStack;
+
+void LLS_CreateStack(LinkedListStack** Stack);
+void LLS_DestroyStack(LinkedListStack** Stack);
+
+Node* LLS_CreateNode(char* Data);
+void LLS_DestroyNode(Node* _Node);
+
+void LLS_Push(LinkedListStack* Stack, Node* NewNode);
+Node* LLS_Pop(LinkedListStack* Stack);
+
+Node* LLS_Top(LinkedListStack* Stack);
+int LLS_GetSize(LinkedListStack* Stack);
+bool LLS_IsEmpty(LinkedListStack* Stack);
+
+#endif
+```
+
+### LinkedListStack.c
+
+```c
+#include "LinkedListStack.h"
+
+void LLS_CreateStack(LinkedListStack** Stack)
+{
+    (*Stack) = (LinkedListStack*)malloc(sizeof(LinkedListStack));
+    (*Stack)->List = NULL;
+    (*Stakc)->Top = NULL;
+}
+
+void LLS_DestroyStack(LinkedListStack* Stack)
+{
+    while(!LLS_IsEmpty(Stack))
+    {
+        Node* Popped = LLS_Pop(Stack);
+        LLS_DestroyNode(Popped);
+    }
+
+    free(Stack);
+}
+
+Node* LLS_CreateNode(char* NewData)
+{
+    Node* NewNode = (Node*)malloc(sizeof(Node));
+    NewNode->Data = (char*)malloc(strlen(NewData) + 1);
+    
+    strcpy(NewNode->Data, NewData);
+
+    NewNode->NextNode = NULL;
+
+    return NewNode;
+}
+
+void LLS_DestroyNode(Node* _Node)
+{
+    free(_Node->Data);
+    free(_Node);
+}
+
+void LLS_Push(LinkedListStack* Stack, Node* NewNode)
+{
+    if(Stack->List == NULL)
+    {
+        Stack->List = NewNode;
+    }
+    else
+    {
+        Node* OldTop = Stack->List;
+        while(OldTop->NextNode != NULL)
+        {
+            OldeTop = OldTop->NextNode;
+        }
+        OldTop->NextNode = NewNode;
+    }
+
+    Stack->Top = NewNode;
+}
+
+Node* LLS_Pop(LinkedListStack* Stack)
+{
+    Node* TopNode = Stack->Top;
+
+    if(Stack->List == Stack->Top)
+    {
+        Stack->List = NULL:
+        Stack->Top = NULL;
+    }
+    else
+    {
+        Node* CurrentTop = Stack->List;
+        while(CurrentTop != NULL && CurrentTop->NextNode != Stack->Top)
+        {
+            CurrentTop = CurrentTop->NextNode;
+        }
+        Stack->Top = CurrentTop;
+        CurrentTop->NextNode = NULL;
+    }
+
+    return TopNode;
+}
+
+Node* LLS_Top(LinkedListStack* Stack)
+{
+    return Stack->Top;
+}
+
+int LLS_GetSize(LinkedListStack* Stack)
+{
+    int Count = 0;
+    Node* Current = Stack->List;
+    while(Current != NULL)
+    {
+        Current = Current->NextNode;
+        Count++;
+    }
+    return Count;
+}
+
+bool LLS_IsEmpty(LinkedListStack* Stack)
+{
+    return (Stack->List == NULL);
+}
+```
+
+### Test_LinkedListStack.c
+
+```c
+#include "LinkedListStack.h"
+
+int main(void)
+{
+    int i = 0;
+    int Count = 0;
+    Node* Popped;
+
+    LinkedListStack* Stack;
+
+    LLS_CreateStack(&Stack);
+
+    LLS_Push(Stack, LLS_CreateNode("abc"));
+    LLS_Push(Stack, LLS_CreateNode("def"));
+    LLS_Push(Stack, LLS_CreateNode("ghi"));
+    LLS_Push(Stack, LLS_CreateNode("jkl"));
+    LLS_Push(Stack, LLS_CreateNode("mno"));
+
+    Count = LLS_GetSize(Stack);
+
+    printf("Size : %d, Top: %s\n\n", Count, LLS_Top(Stack)->Data);
+
+    for(i = 0; i < Count; i++)
+    {
+        if (LLS_IsEmpty(Stack))
+        {
+            break;
+        }
+
+        Popped = LLS_Pop(Stack);
+
+        printf("Popped: %s, ", Popped->Data);
+
+        LLS_DestroyNode(Popped);
+
+        if(!LLS_IsEmpty(Stack))
+        {
+            printf("Current Top: %s\n", LLS_Top(Stack)->Datak);
+        }
+        else
+        {
+            printf("Stack Is Empty\n");
+        }
+    }
+    LLS_DestroyStack(Stack);
+
+    return 0;
+}
+
+// 실행결과
+
+Size : 5, Top: mno
+
+Popped: mno, Current Top: jkl
+Popped: jkl, Current Top: ghi
+Popped: ghi, Current Top: def
+Popped: def, Current Top: abc
+Popped: abc, Stack Is Empty
+```
