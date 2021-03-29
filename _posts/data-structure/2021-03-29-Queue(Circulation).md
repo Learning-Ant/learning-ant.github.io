@@ -10,7 +10,7 @@ category: data-structure
 tag: [queue,c]
 ---
 
-# 큐(Queue)
+# 큐(Circular Queue)
 
 > 큐(Queue)는 스택과 달리 데이터가 들어온 순서대로 내보내는 `FIFO(First In First Out)`의 특성을 가지고 있다. 쉽게 말해 **대기행렬** 이라고 할 수 있다.  
 > 메모리 구조에서 우리는 `버퍼`의 개념을 배우는 데, 큐와 유사하다.
