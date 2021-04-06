@@ -7,7 +7,6 @@ hide_description: false
 sitemap: false
 date: 2021-03-09 11:15:00 +0900
 category: algorithm
-tag: [algorithm]
 ---
 
 # 알고리즘 소개

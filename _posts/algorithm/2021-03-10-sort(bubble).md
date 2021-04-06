@@ -7,7 +7,7 @@ hide_description: false
 sitemap: false
 date: 2021-03-10 23:05:00 +0900
 category: algorithm
-tag: [algorithm, sort]
+tag: [sort]
 ---
 
 # 버블 정렬(Bubble Sort)

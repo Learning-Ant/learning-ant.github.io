@@ -7,7 +7,7 @@ hide_description: false
 sitemap: false
 date: 2021-03-09 11:22:00 +0900
 category: algorithm
-tag: [algorithm, sort]
+tag: [sort]
 ---
 
 # 정렬(Sort)의 개요와 선택정렬(Selection Sort)

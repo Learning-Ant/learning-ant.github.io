@@ -7,7 +7,7 @@ hide_description: false
 sitemap: false
 date: 2021-04-01 19:05:00 +0900
 category: algorithm
-tag: [algorithm, sort]
+tag: [sort]
 ---
 
 # 퀵 정렬(Quick Sort)
