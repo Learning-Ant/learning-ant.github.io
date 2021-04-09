@@ -446,4 +446,246 @@ int main(void)
 }
 
 // 실행결과
+5 9 16 23 48 164 19 65 92 84
+9 23 16 65 48 164 19 84 92
+16 23 19 65 48 164 92 84
+19 23 84 65 48 164 92
+23 48 84 65 92 164
+48 65 84 164 92
+65 92 84 164
 ```
+
+## 힙을 이용한 우선순위 큐의 구현
+
+> 이제 힙이라는 자료구조를 알았으니 이를 이용해 우선순위 큐에 대해서 구현해보자.
+> 구현 할 때 기존에 알던 큐의 구조체에 조금의 변경점이 있다. 우선순위 큐라는 말 답게 구조체에 우선순위를 저장할 수 있는 멤버를 선언하고, 각 노드의 자료형을 저장하는 타입으로 void*(void 포인터)를 선언한다. void 포인터로 선언하는 것은 여러 타입을 저장할 수 있도록 하기위함이다.
+{:.note title="attention"}
+
+### PriorityQueue.h
+
+```c
+#ifndef PRIORITYQUEUE_H
+#define PRIORITYQUEUE_H
+
+#include <stdio.h>
+#include <memory.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef int PriorityType;
+
+typedef struct tagPQNode
+{
+  PriorityType Priority;
+  void* Data;
+} Node;
+
+typedef struct tagPriorityQueue
+{
+  Node* Nodes;
+  int Capacity;
+  int UsedSize;
+} PriorityQueue;
+
+PriorityQueue* Create(int InitialSize);
+void Destroy(PriorityQueue* PQ);
+void Enqueue(PriorityQueue* PQ, Node NewDate);
+void Dequeue(PriorityQueue* PQ, Node* Root);
+int GetParent(int Index);
+int GetLeftChild(int Index);
+void SwapNodes(PriorityQueue* PQ, int Index1, int Index2);
+bool IsEmpty(PriorityQueue* PQ);
+
+#endif
+```
+
+### PriorityQueue.c
+
+```c
+
+#include "PriorityQueue.h"
+
+PriorityQueue* Create(int InitialSize)
+{
+  PriorityQueue* NewPQ = (PriorityQueue*)malloc(sizeof(PriorityQueue));
+  NewPQ->Capacity = InitialSize;
+  NewPQ->UsedSize = 0;
+  NewPQ->Nodes = (Node*)malloc(sizeof(Node) * NewPQ->Capacity);
+
+  return NewPQ;
+}
+
+void Destroy(PriorityQueue* PQ)
+{
+  free(PQ->Nodes);
+  free(PQ);
+}
+
+void Enqueue(PriorityQueue* PQ, Node NewNode)
+{
+  int CurrentPosition = PQ->UsedSize;
+  int ParentPosition = GetParent(CurrentPosition);
+
+  if(PQ->UsedSize == PQ->Capacity)
+  {
+    if(PQ->Capacity == 0)
+      PQ->Capacity = 1;
+
+    PQ->Capacity *= 2;
+    PQ->Nodes = (Node*)realloc(PQ->Nodes,sizeof(Node) * PQ->Capacity);
+  }
+
+  PQ->Nodes[CurrentPosition] = NewNode;
+
+  while(CurrentPosition > 0 &&
+        PQ->Nodes[CurrentPosition].Priority < PQ->Nodes[ParentPosition].Priority)
+  {
+    SwapNodes(PQ, CurrentPosition, ParentPosition);
+
+    CurrentPosition = ParentPosition;
+    ParentPosition = GetParent(CurrentPosition);
+  }
+
+  PQ->UsedSize++;
+}
+
+void SwapNodes(PriorityQueue* PQ, int Index1, int Index2)
+{
+  int CopySize = sizeof(Node);
+  Node* Temp = (Node*)malloc(CopySize);
+
+  memcpy(Temp, &PQ->Nodes[Index1], CopySize);
+  memcpy(&PQ->Nodes[Index1], &PQ->Nodes[Index2], CopySize);
+  memcpy(&PQ->Nodes[Index2], Temp, CopySize);
+
+  free(Temp);
+}
+
+void Dequeue(PriorityQueue* PQ, Node* Root)
+{
+  int ParentPosition = 0;
+  int LeftPosition = 0;
+  int RightPosition = 0;
+
+  memcpy(Root, &PQ->Nodes[0], sizeof(Node));
+  memset(&PQ->Nodes[0], 0, sizeof(Node));
+
+  PQ->UsedSize--;
+  SwapNodes(PQ, 0, PQ->UsedSize);
+
+  LeftPosition = GetLeftChild(0);
+  RightPosition = LeftPosition + 1;
+
+  while(1)
+  {
+    int SelectedChild = 0;
+
+    if(LeftPosition >= PQ->UsedSize)
+      break;
+
+    if(RightPosition >= PQ->UsedSize)
+    {
+      SelectedChild = LeftPosition;
+    }
+    else
+    {
+      if(PQ->Nodes[LeftPosition].Priority > PQ->Nodes[RightPosition].Priority)
+        SelectedChild = RightPosition;
+      else
+        SelectedChild = LeftPosition;
+    }
+
+    if(PQ->Nodes[SelectedChild].Priority < PQ->Nodes[ParentPosition].Priority)
+    {
+      SwapNodes(PQ, ParentPosition, SelectedChild);
+      ParentPosition = SelectedChild;
+    }
+    else
+      break;
+
+    LeftPosition = GetLeftChild(ParentPosition);
+    RightPosition = LeftPosition + 1;
+  }
+
+  if(PQ->UsedSize < (PQ->Capacity / 2))
+  {
+    PQ->Capacity /= 2;
+    PQ->Nodes = (Node*)realloc(PQ->Nodes, sizeof(Node) * PQ->Capacity);
+  }
+}
+
+int GetParent(int Index)
+{
+  return (int)((Index - 1) / 2);
+}
+
+int GetLeftChild(int Index)
+{
+  return (2 * Index) + 1;
+}
+
+bool IsEmpty(PriorityQueue* PQ)
+{
+  return (PQ->UsedSize == 0);
+}
+```
+
+### Test_PriorityQueue.c
+
+```c
+#include "PriorityQueue.h"
+
+void PrintNode(Node* Node)
+{
+  printf("작업 : %s (우선순위 : %d)\n", Node->Data, Node->Priority);
+}
+
+int main(void)
+{
+  PriorityQueue* PQ = Create(3);
+  Node Popped;
+
+  Node Nodes[8] =
+  {
+    {1, (void*)"프로그래밍 언어공부"},
+    {9, (void*)"청소"},
+    {3, (void*)"OOP 공부"},
+    {18, (void*)"밥먹기"},
+    {5, (void*)"책상정리"},
+    {2, (void*)"자료구조&알고리즘"},
+    {14, (void*)"양치"},
+    {7, (void*)"휴대폰충전"},
+  };
+
+  Enqueue(PQ, Nodes[0]);
+  Enqueue(PQ, Nodes[1]);
+  Enqueue(PQ, Nodes[2]);
+  Enqueue(PQ, Nodes[3]);
+  Enqueue(PQ, Nodes[4]);
+  Enqueue(PQ, Nodes[5]);
+  Enqueue(PQ, Nodes[6]);
+  Enqueue(PQ, Nodes[7]);
+
+  printf("남은 작업 수 : %d\n", PQ->UsedSize);
+
+  while(!IsEmpty(PQ))
+  {
+    Dequeue(PQ, &Popped);
+    PrintNode(&Popped);
+  }
+
+  return 0;
+}
+
+// 실행결과
+남은 작업 수 : 8
+작업 : 프로그래밍 언어공부 (우선순위 : 1)
+작업 : 자료구조&알고리즘 (우선순위 : 2)
+작업 : OOP 공부 (우선순위 : 3)
+작업 : 책상정리 (우선순위 : 5)
+작업 : 휴대폰충전 (우선순위 : 7)
+작업 : 청소 (우선순위 : 9)
+작업 : 양치 (우선순위 : 14)
+작업 : 밥먹기 (우선순위 : 18)
+```
+
