@@ -235,7 +235,7 @@ int Hash(KeyType Key, int KeyLength, int TableSize)
 
 ### 체이닝(Chaining)
 
-> 개방 해싱기법 중 하나인 체이닝이다. 체이닝이란 같은 해시값을 가지는 두 데이터가 발생해 충돌이 발생하면 각 데이터를 해당 주소에 있는 링크드 리스트에 삽입하여 문제를 해결하는 것이다. 사슬처럼 엮는다는 의미에서 체이닝이란 이름을 가진다고 한다.
+> 개방 해싱기법 중 하나인 체이닝이다.(체이닝은 오픈 해싱 기법인 동시에 폐쇄 주소법이기도 하다.) 체이닝이란 같은 해시값을 가지는 두 데이터가 발생해 충돌이 발생하면 각 데이터를 해당 주소에 있는 링크드 리스트에 삽입하여 문제를 해결하는 것이다. 사슬처럼 엮는다는 의미에서 체이닝이란 이름을 가진다고 한다.
 {:.note title="attention"}
 
 ![체이닝의 모습](/assets/img/algorithm/chaining.png)
@@ -578,4 +578,328 @@ void Set(HashTable* HT, KeyType Key, ValueType Value)
 
 ### 개방 주소법
 
-작성중
+> 앞서 알아봤던 체이닝은 해시 함수에 의해 얻어진 주소만을 사용해 해시 테이블을 구성하는 알고리즘이다.
+> 개방 주소법은 충돌이 일어날 때 해시 함수에 의해 얻어진 주소가 아니더라도 얼마든지 다른 주소를 사용할 수 있도록 허용하는 충돌 해결 알고리즘이다. 
+> 충돌이 일어나면 해시 테이블 내의 새로운 주소를 탐사하여 충돌된 데이터를 입력하는 방식으로 동작한다. 즉, 개방 주소법은 탐사가 중요하다.
+{:.note title="attention"}
+
+#### 선형 탐사(Linear Probing)
+
+> 선형 탐사는 말 그대로 해시 함수로부터 얻어낸 주소로 충돌이 발생할 경우 현재 주소에서 고정폭만큼 이동하여 비어있으면 데이터를 저장하는 방식이다.
+{:.note title="attention"}
+
+![선형탐사](/assets/img/algorithm/linear_probing.png)
+{:.lead loading="lazy" align="center"}
+
+선형탐사
+{:.figcaption}
+
+* 그림을 보면 해시 테이블에 삽입된 데이터들이 모이게 되는 클러스터(Cluster) 현상이 발생한다는 것을 알 수 있다. 이를 다소 개선한 것이 다음의 제곱 탐사이다.
+
+#### 제곱 탐사(Quadratic Probing)
+
+> 제곱 탐사는 선형 탐사가 이동하는 방식과 비슷하지만 이동 간격이 충돌횟수의 제곱만큼 늘어난다는 것만 다르다. 간단히 말해 첫번째 충돌은 1의 제곱인 1만큼 이동, 이동한 주소에도 데이터가 저장되어 있다면 이제 2의 제곱인 4만큼 이동하는 방식이다.
+{:.note title="attention"}
+
+* 하지만 제곱 탐사 역시 클러스터에 자유롭지 못하다. 같은 주소값을 가지는 데이터들이 삽입된다면 순차적으로 늘어나는 값의 제곱수는 동일하기 때문에 어짜피 고정폭만큼씩 이동하게 되어 클러스터가 발생한다.
+이제 이런 충돌 시 이동간격의 규칙성을 없애는 탐사 방법을 알아보자.
+
+#### 이중 해싱(Double Hashing)
+
+> 이중 해싱이란 이동 폭을 정하는 방식을 또 다른 해싱 함수를 사용하는 것으로 정하는 것이다.
+{:.note title="attention"}
+
+* 먼저 코드부터 살펴보자.
+
+    ```c
+    int Hash(int Key)
+    {
+        return Key % 13;
+    }
+
+    int Hash2(int Key)
+    {
+        return (Key % 7) + 6;
+    }
+    ```
+
+    해당 코드로 동작하는 원리를 그림으로 알아본다.
+
+    ![이중 해싱](/assets/img/algorithm/double_hashing.png)
+    {:.lead loading="lazy" align="center"}
+
+    이중 해싱
+    {:.figcaption}
+
+#### 재해싱(Rehashing)
+
+> 재해싱은 해시 테이블의 여유 공간이 적어질 경우 나타나는 성능 저하를 해결하기 위한 알고리즘이다. 해시 테이블의 크기를 늘리고 모든 데이터를 다시 해싱하여 배치하는 것이다.
+{:.note title="attention"}
+
+#### 모듈화
+
+* OpenAddressing.h
+
+```c
+#ifndef OPEN_ADDRESSING_H
+#define OPEN_ADDRESSING_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef char* KeyType;
+typedef char* ValueType;
+
+// 해시 테이블 요소가 비었는지를 나타내는 enum
+enum ElementStatus
+{
+    EMPTY = 0,
+    OCCUPIED = 1
+};
+
+typedef struct tagElementType
+{
+    KeyType Key;
+    ValueType Value;
+
+    enum ElementStatus Status;
+} ElementType;
+
+typedef struct tagHashTable
+{
+    int OccupiedCount;
+    int TableSize;
+
+    ElementType* Table;
+} HashTable;
+
+HashTable* CreateHashTable(int TableSize);
+void DestroyHashTable(HashTable* HT);
+void ClearElement(ElementType* Element);
+
+void Set(HashTable** HT, KeyType Key, ValueType Value);
+ValueType Get(HashTable* HT, KeyType Key);
+int Hash(KeyType Key, int KeyLength, int TableSize);
+int Hash2(KeyType Key, int KeyLength, int TableSize);
+
+void Rehash(HashTable** HT);
+
+#endif
+```
+
+* OpenAddressing.c
+
+```c
+#include "OpenAddressing.h"
+
+HashTable* CreateHashTable(int TableSize)
+{
+    HashTable* HT = (HashTable*)malloc(sizeof(HashTable));
+    HT->Table = (ElementType*)malloc(sizeof(ElementType) * TableSize);
+
+    memset(HT->Table, 0, sizeof(ElementType) * TableSize);
+
+    HT->TableSize = TableSize;
+    HT->OccupiedCount = 0;
+
+    return HT;
+}
+
+void Set(HashTable** HT, KeyType Key, ValueType Value)
+{
+    int KeyLen, Address, StepSize;
+    double Usage;
+
+    Usage = (double)(*HT)->OccupiedCount / (*HT)->TableSize;
+
+    if(Usage > 0.5)
+    {
+        Rehash(HT);
+    }
+
+    KeyLen = strlen(Key);
+    Address = Hash(Key, KeyLen, (*HT)->TableSize);
+    StepSize = Hash2(Key, KeyLen, (*HT)->TableSize);
+
+    while((*HT)->Table[Address].Status != EMPTY &&
+           strcmp((*HT)->Table[Address].Key, Key) != 0)
+    {
+        printf("Collision occured! : Key(%s), Address(%d), StepSize(%d)\n", Key, Address, StepSize);
+        Address = (Address + StepSize) % (*HT)->TableSize;
+    }
+
+    (*HT)->Table[Address].Key = (char*)malloc(sizeof(char) * (KeyLen + 1));
+    strcpy((*HT)->Table[Address].Key, Key);
+
+    (*HT)->Table[Address].Value = (char*)malloc(sizeof(char) * (strlen(Value) + 1));
+
+    strcpy((*HT)->Table[Address].Value, Value);
+
+    (*HT)->Table[Address].Status = OCCUPIED;
+
+    (*HT)->OccupiedCount++;
+
+    printf("Key(%s) entered at address(%d)\n", Key, Address);
+}
+
+ValueType Get(HashTable* HT, KeyType Key)
+{
+    int KeyLen = strlen(Key);
+
+    int Address = Hash(Key, KeyLen, HT->TableSize);
+    int StepSize = Hash2(Key, KeyLen, HT->TableSize);
+
+    while(HT->Table[Address].Status != EMPTY &&
+          strcmp(HT->Table[Address].Key, Key) != 0)
+    {
+        if(HT->Table[Address].Status == EMPTY)
+            return NULL;
+
+        Address = (Address + StepSize) % HT->TableSize;
+    }
+
+    return HT->Table[Address].Value;
+}
+
+void ClearElement(ElementType* Element)
+{
+    if(Element->Status == EMPTY)
+        return;
+
+    free(Element->Key);
+    free(Element->Value);
+}
+
+void DestroyHashTable(HashTable* HT)
+{
+    int i = 0;
+    for (i = 0; i < HT->TableSize; i++)
+    {
+        ClearElement(&(HT->Table[i]));
+    }
+
+    free(HT->Table);
+    free(HT);
+}
+
+int Hash(KeyType Key, int KeyLength, int TableSize)
+{
+    int i = 0;
+    int HashValue = 0;
+    for(i = 0; i < KeyLength; i++)
+        HashValue = (HashValue << 3) + Key[i];
+
+    HashValue = HashValue % TableSize;
+
+    return HashValue;
+}
+
+int Hash2(KeyType Key, int KeyLength, int TableSize)
+{
+    int i = 0;
+    int HashValue = 0;
+
+    for(i = 0; i < KeyLength; i++)
+        HashValue = (HashValue << 2) + Key[i];
+
+    HashValue = HashValue % (TableSize - 6);
+
+    return HashValue + 6;
+}
+
+void Rehash(HashTable** HT)
+{
+    int i = 0;
+    ElementType* OldTable = (*HT)->Table;
+
+    HashTable* NewHT = CreateHashTable((*HT)->TableSize * 2);
+
+    printf("Rehashing...(New HT Size : %d)\n", NewHT->TableSize);
+
+    for(i = 0; i < (*HT)->TableSize; i++)
+    {
+        if(OldTable[i].Status == OCCUPIED)
+            Set(&NewHT, OldTable[i].Key, OldTable[i].Value);
+    }
+
+    DestroyHashTable((*HT));
+
+    (*HT) = NewHT;
+}
+```
+
+* Test_OpenAddressing.c
+
+```c
+#include "OpenAddressing.h"
+
+int main(void)
+{
+    HashTable* HT = CreateHashTable(17);
+
+    Set(&HT, "NAVER", "Naver");
+    Set(&HT, "KAKAO", "Kakao");
+    Set(&HT, "RHL", "Red Hat Linux");
+    Set(&HT, "APAC", "Apache Org");
+    Set(&HT, "IBM", "IBM");
+    Set(&HT, "GOOGLE", "Google");
+    Set(&HT, "APPLE", "Apple");
+    Set(&HT, "SAMSUNG", "Samsung");
+    Set(&HT, "RS", "LG");
+    Set(&HT, "SK", "SK");
+
+    printf("\n");
+    printf("Key:%s, Value:%s\n", "NAVER", Get(HT,"NAVER"));
+    printf("Key:%s, Value:%s\n", "KAKAO", Get(HT,"KAKAO"));
+    printf("Key:%s, Value:%s\n", "RHL", Get(HT,"RHL"));
+    printf("Key:%s, Value:%s\n", "APAC", Get(HT,"APAC"));
+    printf("Key:%s, Value:%s\n", "IBM", Get(HT,"IBM"));
+    printf("Key:%s, Value:%s\n", "GOOGLE", Get(HT,"GOOGLE"));
+    printf("Key:%s, Value:%s\n", "APPLE", Get(HT,"APPLE"));
+    printf("Key:%s, Value:%s\n", "SAMSUNG", Get(HT,"SAMSUNG"));
+    printf("Key:%s, Value:%s\n", "RS", Get(HT,"RS"));
+    printf("Key:%s, Value:%s\n", "SK", Get(HT,"SK"));
+
+    DestroyHashTable(HT);
+
+    return 0;
+}
+
+// 실행결과
+Key(NAVER) entered at address(2)
+Key(KAKAO) entered at address(14)
+Key(RHL) entered at address(1)
+Key(APAC) entered at address(6)
+Key(IBM) entered at address(7)
+Collision occured! : Key(GOOGLE), Address(6), StepSize(15)
+Key(GOOGLE) entered at address(4)
+Key(APPLE) entered at address(10)
+Collision occured! : Key(SAMSUNG), Address(1), StepSize(11)
+Key(SAMSUNG) entered at address(12)
+Key(RS) entered at address(8)
+Rehashing...(New HT Size : 34)
+Key(RHL) entered at address(18)
+Key(NAVER) entered at address(2)
+Key(GOOGLE) entered at address(23)
+Collision occured! : Key(APAC), Address(23), StepSize(33)
+Key(APAC) entered at address(22)
+Key(IBM) entered at address(7)
+Key(RS) entered at address(25)
+Key(APPLE) entered at address(27)
+Key(SAMSUNG) entered at address(1)
+Key(KAKAO) entered at address(31)
+Collision occured! : Key(SK), Address(25), StepSize(21)
+Key(SK) entered at address(12)
+
+Key:NAVER, Value:Naver
+Key:KAKAO, Value:Kakao
+Key:RHL, Value:Red Hat Linux
+Key:APAC, Value:Apache Org
+Key:IBM, Value:IBM
+Key:GOOGLE, Value:Google
+Key:APPLE, Value:Apple
+Key:SAMSUNG, Value:Samsung
+Key:RS, Value:LG
+Key:SK, Value:SK
+```
