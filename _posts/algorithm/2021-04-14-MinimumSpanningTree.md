@@ -163,3 +163,7 @@ void Prim(Graph* G, Vertex* StartVertex, Graph* MST)
     PQ_Destroy(PQ);
 }
 ```
+
+## 크루스칼 알고리즘
+
+작성중

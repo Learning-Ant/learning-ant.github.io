@@ -300,5 +300,10 @@ int main(void)
 }
 
 // 실행결과
-
+> GraphTraversal
+Enter Traversal Mode(0:DFS, 1:BFS) : 0
+1 2 4 5 7 3 6
+> GraphTraversal
+Enter Traversal Mode(0:DFS, 1:BFS) : 0
+1 2 3 4 5 6 7
 ```
