@@ -166,4 +166,78 @@ void Prim(Graph* G, Vertex* StartVertex, Graph* MST)
 
 ## 크루스칼 알고리즘
 
-작성중
+> 크루스칼 알고리즘은 그래프 내의 모든 간선들의 가중치 정보를 사전에 파악하고, 그 정보를 토대로 최소 신장 트리를 구축해나가는 것이다.
+
+알고리즘의 로직은 아래와 같다.
+
+1. 그래프 내의 모든 간선을 가중치의 오름차순으로 목록을 만든다.
+2. 1번에서 만든 간선의 목록을 차례대로 순회하면서 간선을 최소 신장 트리에 추가합니다. 단, 여기서 추가된 간선으로 인해 최소 신장 트리 내에 사이클이 형성되어선 안된다.
+
+역시 프림 알고리즘과 같이 알고리즘을 진행하면서 사이클을 형성하는지를 감지하고 방지해아한다. 프림 알고리즘과 다르게 크루스칼 알고리즘은 이 사이클이 형성되는 지를 각 정점들을 '분리집합'으로 묶어가면서 감지한다.
+
+### 구현
+
+```c
+void Kruskal(Graph* G, Graph* MST)
+{
+    int i;
+    Vertex* CurrentVertex = NULL;
+    Vertex** MSTVertices = (Vertex**) malloc(sizeof(Vertex*) * G->VertexCount);
+
+    DisjointSet** VertextSet = (DisjointSet**)malloc(sizeof(DisjointSet*) * G->VertexCount);
+
+    PriorityQueue* PQ = PQ_Create(10);
+
+    i = 0;
+    CurrentVertex = G->Vertices;
+    while(CurrentVertex != NULL)
+    {
+        Edge* CurrentEdge;
+
+        VertexSet[i] = DS_MakeSet(CurrentVertex);
+        MSTVertices[i] = CreateVertex(CurrentVertex->Data);
+        AddVertex(&MST, MSTVertices[i]);
+
+        CurrentEdge = CurrentVertex->AdjacencyList;
+        while(CurrentEdge != NULL)
+        {
+            PQNode NewNode = {CurrentEdge->Weight, CurrentEdge};
+            PQ_Enqueue(PQ, NewNode);
+
+            CurrentEdge = CurrentEdge->Next;
+        }
+
+        CurrentVertex = CurrentVertex->Next;
+        i++;
+    }
+
+    while(!PQ_IsEmpty(PQ))
+    {
+        Edge* CurrentEdge;
+        int FromIndex;
+        int ToIndex;
+        PQNode Popped;
+
+        PQ_Dequeue(PQ, &Popped);
+        CurrentEdge = (Edge*)Popped.Data;
+
+        FromIndex = CurrentEdge->From->Index;
+        ToIndex = CurrentEdge->Target->Index;
+
+        if(DS_FindSet(VertextSet[FromIndex]) != DS_FindSet(VertexSet[ToIndex]))
+        {
+            AddEdge(MSTVertices[FromIndex], CreateEdge(MSTVertices[FromIndex], MSTVertices[ToIndex], CurrentEdge->Weight));
+
+            AddEdge(MSTVertices[ToIndex], CreateEdge(MSTVertices[ToIndex], MSTVertices[FromIndex], CurrentEdge->Weight));
+
+            DS_UnionSet(VertexSet[FromIndex], VertexSet[ToIndex]);
+        }
+    }
+    for ( i = 0; i < G->VertexCount; i++)
+        DS_DestroySet(VertexSet[i]);
+
+    free(VertexSet);
+    free(MSTVertices);
+}
+```
+
