@@ -7,7 +7,7 @@ hide_description: false
 sitemap: false
 date: 2021-04-18 20:02:00 +0900
 category: algorithm
-tag: [string]
+tag: [string, hash]
 ---
 
 # 문자열 검색(카프-라빈 알고리즘)
