@@ -6,5 +6,5 @@ slug: string
 category: algorithm
 sidebar: true
 description: >
-  sort
+  Algorithm of String
 ---

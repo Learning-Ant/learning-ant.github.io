@@ -6,5 +6,5 @@ slug: search
 category: algorithm
 sidebar: true
 description: >
-  sort
+  Search
 ---

@@ -6,5 +6,5 @@ slug: graph
 category: algorithm
 sidebar: true
 description: >
-  sort
+  Graph
 ---
