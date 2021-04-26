@@ -176,4 +176,72 @@ int main()
 > 거듭제곱은 수행 시간이 오래 걸리는 연산이다. 이를 제곱의 특성을 이용해 분할 정복기법으로 구현이 가능하다.
 {:.note title="attention"}
 
+$$
+C^{n} = \begin{cases}
+    C^{n/2}C^{n/2} &\text{, n은 짝수} \\
+    C^{{(n-1)}/2}C^{(n-1)/2}C &\text{, n은 홀수} 
+\end{cases}
+$$
+
+어떤 수 C의 n번 제곱한 결과는 위와 같은 식처럼 두 경우로 나누어 생각 할 수 있다. 이를 이용해 문제를 더 이상 쪼갤 수 없는 단위까지 분할하여 하나씩 해결해 나가는 분할 정복 알고리즘으로 구현할 수 있다.
+
+### 구현
+
+#### Exponentiation.c
+
+```c
+#include <stdio.h>
+
+typedef unsigned long long ULONG;
+
+ULONG Power(int Base, int Exponent)
+{
+    if (Exponent == 1)
+        return Base;
+    else if (Base == 0)
+        return 1;
+
+    if (Exponenet % 2 == 0)
+    {
+        ULONG NewBase = Power(Base, Exponenet/2);
+        return NewBase * NewBase;
+    }
+    else
+    {
+        ULONG NewBase = Power(Base, (Exponent - 1)/2);
+        return NewBase * NewBase * Base;
+    }
+}
+
+int main(void)
+{
+    int Base = 2;
+    int Exponenet = 30;
+    printf("%d ^ %d = %lu\n", Base, Exponenet, Power(Base, Exponenet));
+
+    return 0;
+}
+
+// 실행결과
+
+2 ^ 30 = 1073741824
+```
+
+## 피보나치 수
+
+> 재귀적 호출로 구현할 수 있는 유명한 수열 중에는 피보나치 수라는 것이 있다.  
+> $$ a_{n+2} = a_{n+1} + a_{n} $$  
+> 위와 같은 점화식을 따르는 수열인데 이 역시 분할 정복 알고리즘으로 구현이 가능하다.
+{:.note title="attention"}
+
+위의 점화식을 토대로 함수를 작성해보면 아래와 같다.
+
+$$
+F_{n} = \begin{cases}
+0 &\text{, n = 0} \\
+1 &\text{, n = 1} \\
+F_{n-1} + F_{n-2} &\text{, n > 1}
+\end{cases}
+$$
+
 작성중 ..
