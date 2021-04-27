@@ -244,4 +244,191 @@ F_{n-1} + F_{n-2} &\text{, n > 1}
 \end{cases}
 $$
 
-작성중 ..
+이 점화식을 가지고 함수를 구현하게 되면 아래처럼 작성할 수 있다.
+
+```c
+ULONG Fibonacci(int n)
+{
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return 1;
+    return Fibonacci(n - 1) + Fibonacci(n - 2);
+}
+```
+
+이렇게 전전 피보나치 수와 전 피보나치 수를 재귀적으로 호출해 결국 n번째 피보나치 수를 알 수 있게 되는 것이다.  
+하지만 이는 n이 커질수록 재귀호출이 2의 제곱수만큼 늘어나게 된다. 아래의 도표로 그 심각성을 느껴보자.
+
+![피보나치 수](/assets/img/algorithm/divide_conquer/fibonacci/fibonacci-graph.png)
+{:.lead loading="lazy" align="center"}
+
+n이 커질 수록 재귀호출해야하는 횟수가 기하급수적으로 늘어난다.
+{:.figcaption}
+
+사실 위와 같은 재귀적 호출은 분할 정복이라 볼 수 없다. 위의 기하급수적으로 늘어나는 재귀호출을 개선하기 위해 분할 정복 알고리즘을 적용해본다.
+
+### 피보나치 수열의 분할 정복
+
+> 피보나치 수열은 행렬로의 표현이 가능하다. 피보나치 수열을 행렬문제로 바꾸어 행렬의 특성을 이용해 거듭 제곱과 비슷한 문제로 만들 수 있고, 피보나치의 기하급수적으로 늘어나는 재귀호출을 대폭 줄일 수 있게된다.
+{:.note title="attention"}
+
+가장 처음의 피보나치 수열을 행렬에 적용해본다.
+
+$$
+\begin{bmatrix}
+    F_{2} & F_{1} \\
+    F_{1} & F_{0}
+\end{bmatrix} =
+\begin{bmatrix}
+    1 & 1 \\
+    1 & 0
+\end{bmatrix}
+$$
+
+만약 이 행렬을 제곱하게 되면 다음과 같이 된다.
+
+$$
+\begin{align*}
+    \begin{bmatrix}
+        F_{2} & F_{1} \\
+        F_{1} & F_{0}
+    \end{bmatrix}^{2} &=
+    \begin{bmatrix}
+        F_{2} & F_{1} \\
+        F_{1} & F_{0}
+    \end{bmatrix}
+    \begin{bmatrix}
+        1 & 1 \\
+        1 & 0
+    \end{bmatrix}=
+    \begin{bmatrix}
+        F_{2} + F_{1} & F_{2} \\
+        F_{1} + F_{0} & F_{1}
+    \end{bmatrix} \\ &=
+    \begin{bmatrix}
+        F_{3} & F_{2} \\
+        F_{2} & F_{1}
+    \end{bmatrix}
+\end{align*}
+$$
+
+이를 일반화 시키면 아래와 같은 공식이 된다.
+
+$$
+\begin{bmatrix}
+    F_{n+1} & F_{n} \\
+    F_{n} & F_{n - 1}
+\end{bmatrix} =
+\begin{bmatrix}
+    1 & 1 \\
+    1 & 0
+\end{bmatrix}^{n} =
+\begin{bmatrix}
+    1 & 1 \\
+    1 & 0
+\end{bmatrix}^{n-1}
+\begin{bmatrix}
+    1 & 1 \\
+    1 & 0
+\end{bmatrix}
+$$
+
+여기서 이제 행렬의 곱셈에 분할을 적용한다.
+
+$$
+\begin{bmatrix}
+    F_{n+1} & F_{n} \\
+    F_{n} & F_{n - 1}
+\end{bmatrix} =
+\begin{bmatrix}
+    1 & 1 \\
+    1 & 0
+\end{bmatrix}^{n} =
+\begin{bmatrix}
+    1 & 1 \\
+    1 & 0
+\end{bmatrix}^{n/2}
+\begin{bmatrix}
+    1 & 1 \\
+    1 & 0
+\end{bmatrix}^{n/2}
+$$
+
+이제 바로 전에 배운 거듭제곱의 분할 정복 알고리즘 적용과 원리가 같아졌다. 이제 코드로 구현해본다.
+
+### 구현
+
+#### Fibonacci.c
+
+```c
+#include <stdio.h>
+
+typedef unsigned long ULONG;
+
+typedef struct tagMatrix2by2
+{
+    ULONG Data[2][2];
+} Matrix2by2
+
+Matrix2by2 MatrixMultiply(Matrix2by2 A, Matrix2by2 B)
+{
+    Matrix2by2 C;
+
+    C.Data[0][0] = A.Data[0][0]*B.Data[0][0] + A.Data[0][1]*B.Data[1][0];
+    C.Data[0][1] = A.Data[0][0]*B.Data[1][0] + A.Data[0][1]*B.Data[1][1];
+
+    C.Data[1][0] = A.Data[1][0]*B.Data[0][0] + A.Data[1][1]*B.Data[1][0];
+    C.Data[1][1] = A.Data[1][0]*B.Data[1][0] + A.Data[1][1]*B.Data[1][1];
+
+    return C;
+}
+
+Matrix2by2 MatrixPower(Matrix2by2 A, int n)
+{
+    if(n > 1)
+    {
+        A = MatrixPower(A, n / 2);
+        A = MatrixMultiply(A, A);
+
+        if(n % 2 == 1)
+        {
+            Matrix2by2 B;
+            B.Data[0][0] = 1;
+            B.Data[0][1] = 1;
+            B.Data[1][0] = 1;
+            B.Data[1][1] = 0;
+
+            A = MatrixMultiply(A, B);
+        }
+    }
+
+    return A;
+}
+
+ULONG Fibonacci(int N)
+{
+    matrix2by2 A;
+    A.Data[0][0] = 1;
+    A.Data[0][1] = 1;
+    A.Data[1][0] = 1;
+    A.Data[1][1] = 0;
+
+    A = MatrixPower(A, N);
+
+    return A.Data[0][1];
+}
+
+int main(void)
+{
+    int N = 46;
+    ULONG Result = Fibonacci(N);
+
+    printf("%d번째 피보나치 수 : %lu\n",N, Result);
+
+    return 0;
+}
+
+// 실행결과
+46번째 피보나치 수 : 1836311903
+```
