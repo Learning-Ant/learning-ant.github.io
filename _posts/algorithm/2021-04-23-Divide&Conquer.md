@@ -391,7 +391,7 @@ Matrix2by2 MatrixPower(Matrix2by2 A, int n)
         A = MatrixPower(A, n / 2);
         A = MatrixMultiply(A, A);
 
-        if(n % 2 == 1)
+        if(n % 2 == 1) // n이 홀수 일 경우 한 번 더 곱해준다.
         {
             Matrix2by2 B;
             B.Data[0][0] = 1;
