@@ -1,10 +1,10 @@
 ---
 layout: list
 type: tag
-title: Graph
-slug: graph
-category: data-structure
+title: Greedy
+slug: greedy
+category: algorithm
 sidebar: true
 description: >
-  Graph
+  Greedy
 ---

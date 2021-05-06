@@ -6,7 +6,7 @@ description: >
 hide_description: false
 sitemap: false
 date: 2021-04-09 19:31:00 +0900
-category: algorithm
+category: data-structure
 tag: [queue]
 ---
 
