@@ -179,7 +179,7 @@ int main()
 $$
 C^{n} = \begin{cases}
     C^{n/2}C^{n/2} &\text{, n은 짝수} \\
-    C^{{(n-1)}/2}C^{(n-1)/2}C &\text{, n은 홀수} 
+    C^{(n-1)/2}C^{(n-1)/2}C &\text{, n은 홀수} 
 \end{cases}
 $$
 
