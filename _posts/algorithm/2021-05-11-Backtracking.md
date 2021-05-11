@@ -38,7 +38,7 @@ tag : [backtracking]
 위와 같은 미로가 있다. 일단 이를 좀 더 보기 좋게 부분 문제들을 트리형태로 변경하여 그 과정을 살펴본다.
 
 ![길찾기](/assets/img/algorithm/backtracking/backtracking1.png)
-{:.lead loading="lazy" align="center" width="500" height="500"}
+{:.lead loading="lazy" align="center" width="500px" height="500px"}
 
 분기점(부분 문제)의 트리형태
 {:.figcaption}
