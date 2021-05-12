@@ -115,4 +115,279 @@ typedef struct tagPosition
 
 ### 알고리즘 구현
 
-> 정리중..
+알고리즘은 다음과 같은 순서로 진행된다.
+
+1. 시작점 S를 현재위치로 지정하고, 이동 방향을 위로 설정
+2. 현재 위치에서 가려는 방향에 대해 이동 할 수 있는지를 확인하고, 벽과 지나온 길은 이동이 불가능
+3. 이동 가능하다면 이동. 불가능하다면 방향을 바꿔 다시 판단하고 모든 방향으로 이동이 불가능하면 이전 위치로 돌아간다.
+4. 출구를 찾거나 모든 경로를 탐색할 때까지 위의 과정을 반복한다.
+
+#### MazeSolver.h
+
+```c
+#ifndef MAZESOLVER_H
+#define MZAESOLVER_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_BUFFER 1024
+#define INIT_VALUE -1
+
+#define START 'S'
+#define GOAL 'G'
+#define WAY ' '
+#define WALL '#'
+#define MARKED '+'
+
+enum DIRECTION { NORTH, SOUTH, EAST, WEST};
+enum RESULT {FAIL, SUCCEED};
+
+typedef struct tagPosition
+{
+    int X;
+    int Y;
+} Position;
+
+typedef struct tagMazeInfo
+{
+    int ColumnSize;
+    int RowSize;
+
+    char** Data;
+} MazeInfo;
+
+int Solve(MazeInfo* Maze);
+int MoveTo(MazeInfo* Maze, Position* Current, int Direction);
+int GetNextStep(MazeInfo* Maze, Position* Current, int Direction, Position* Next);
+int GetMaze(char* FilePath, MazeInfo* Maze);
+
+#endif // MAZESOLVER_H
+```
+
+#### MazeSolver.c
+
+```c
+#include "MazeSolver.h"
+
+int Solve(MazeInfo* Maze)
+{
+    int i = 0;
+    int j = 0;
+    int StartFound = FAIL;
+    int Result = FAIL;
+
+    Position Start;
+
+    for(i = 0; i < Maze->RowSize; i++)
+    {
+        for(j = 0; j < Maze->ColumnSize; j++)
+        {
+            if(Maze->Data[i][j] == START)
+            {
+                Start.X = j;
+                Start.Y = i;
+                StartFound = SUCCEED;
+                break;
+            }
+        }
+    }
+
+    if(StartFound == FAIL)
+        return FAIL;
+
+    if(MoveTo(Maze, &Start, NORTH))
+        Result = SUCCEED;
+    else if (MoveTo(Maze, &Start, SOUTH))
+        Result = SUCCEED;
+    else if (MoveTo(Maze, &Start, EAST))
+        Result = SUCCEED;
+    else if (MoveTo(Maze, &Start, WEST))
+        Result = SUCCEED;
+
+    Maze->Data[Start.Y][Start.X] = START;
+
+    return Result;
+}
+
+int MoveTo(MazeInfo* Maze, Position* Current, int Direction)
+{
+    int i = 0;
+
+    int Dirs[] = {NORTH, SOUTH, WEST, EAST};
+
+    Position Next;
+
+    if(Maze->Data[Current->Y][Current->X] == GOAL)
+        return SUCCEED;
+
+    Maze->Data[Current->Y][Current->X] = MARKED;
+
+    for(i = 0; i < 4; i++)
+    {
+        if(GetNextStep(Maze, Current, Dirs[i], &Next) == FAIL)
+            continue;
+        if(MoveTo(Maze, &Next, NORTH) == SUCCEED)
+            return SUCCEED;
+    }
+
+    Maze->Data[Current->Y][Current->X] = WAY;
+
+    return FAIL;
+}
+
+int GetNextStep(MazeInfo* Maze, Position* Current, int Direction, Position* Next)
+{
+    switch(Direction)
+    {
+    case NORTH:
+        Next->X = Current->X;
+        Next->Y = Current->Y - 1;
+
+        if(Next->Y == -1) return FAIL;
+
+        break;
+
+    case SOUTH:
+        Next->X = Current->X;
+        Next->Y = Current->Y + 1;
+
+        if(Next->Y == Maze->RowSize) return FAIL;
+
+        break;
+
+    case WEST:
+        Next->X = Current->X - 1;
+        Next->Y = Current->Y;
+
+        if(Next->X == -1) return FAIL;
+
+        break;
+
+    case EAST:
+        Next->X = Current->X + 1;
+        Next->Y = Current->Y;
+
+        if(Next->X == Maze->ColumnSize) return FAIL;
+
+        break;
+    }
+
+    if(Maze->Data[Next->Y][Next->X] == WALL) return FAIL;
+    if(Maze->Data[Next->Y][Next->X] == MARKED) return FAIL;
+
+    return SUCCEED;
+}
+
+int GetMaze(char* FilePath, MazeInfo* Maze)
+{
+    int i = 0;
+    int j = 0;
+    int RowSize = 0;
+    int ColumnSize = INIT_VALUE;
+
+    FILE* fp;
+    char buffer[MAX_BUFFER];
+
+    if((fp = fopen(FilePath, "r")) == NULL)
+    {
+        printf("Cannot open file:%s\n", FilePath);
+        return FAIL;
+    }
+
+    while(fgets(buffer, MAX_BUFFER, fp) != NULL)
+    {
+        RowSize++;
+
+        if(ColumnSize == INIT_VALUE)
+        {
+            ColumnSize = strlen(buffer) - 1;
+        }
+        else if (ColumnSize != strlen(buffer) - 1)
+        {
+            printf("Maze data in file:%s is not valid. %d\n", FilePath, strlen(buffer));
+            fclose(fp);
+            return FAIL;
+        }
+    }
+
+    Maze->RowSize = RowSize;
+    Maze->ColumnSize = ColumnSize;
+    Maze->Data = (char**)malloc(sizeof(char*) * RowSize);
+
+    for(i = 0; i < RowSize; i++)
+        Maze->Data[i] = (char*)malloc(sizeof(char) * ColumnSize);
+
+    rewind(fp);
+
+    for(i = 0; i < RowSize; i++)
+    {
+        fgets(buffer, MAX_BUFFER, fp);
+
+        for(j = 0; j < ColumnSize; j++)
+        {
+            Maze->Data[i][j] = buffer[j];
+        }
+    }
+
+    fclose(fp);
+    return SUCCEED;
+}
+```
+
+#### TestMazeSolver.c
+```c
+#include <stdio.h>
+#include "MazeSolver.h"
+
+int main(int argc, char* argv[])
+{
+    int i = 0;
+    int j = 0;
+
+    MazeInfo Maze;
+
+    if(argc < 2)
+    {
+        printf("Usage: MazeSolver <MazeFile>\n");
+
+        return 0;
+    }
+
+    if(GetMaze(argv[1], &Maze) == FAIL)
+        return 0;
+
+    if(Solve(&Maze) == FAIL)
+        return 0;
+
+    for(i = 0; i < Maze.RowSize; i++)
+    {
+        for(j = 0; j < Maze.ColumnSize; j++)
+        {
+            printf("%c", Maze.Data[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+// 실행결과
+#G##############
+#++++++++++++++#
+#### #########+#
+#    ###   ++++#
+# ## ### ##+####
+# ## ###  #+####
+# #########++++#
+#      # #####+#
+# ###### #####+#
+# #   #   S++#+#
+### # ######+#+#
+# # #       +#+#
+# # ########+#+#
+# ##########+#+#
+#           +++#
+################
+```
