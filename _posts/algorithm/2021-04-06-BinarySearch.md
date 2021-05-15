@@ -10,7 +10,7 @@ category: algorithm
 tag: [search]
 ---
 
-# 이진 탐색 트리(Binary Search Tree)
+# [Search]이진 탐색 트리(Binary Search Tree)
 
 > 앞서 이진 탐색에 대해서 포스팅했었다. 오늘 포스팅할 내용은 **이진 탐색을 위한 트리**에 대한 것이다. 이진 탐색에 대한 내용을 소개하고, 실제로 구현해본 후 그 결과가 어떻게 나오는지 알아본다.
 {:.note title="attention"}

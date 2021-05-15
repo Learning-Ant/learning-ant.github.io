@@ -10,7 +10,7 @@ category: algorithm
 tag: [sort]
 ---
 
-# 퀵 정렬(Quick Sort)
+# [Sort]퀵 정렬
 
 > 퀵 정렬은 `분할 정복(Divide and Conquer)`에 기반한 알고리즘이다. 분할 정복이란 전체를 일부로 나누어 일부분부터 차례로 정복하며 최종적으로는 전체를 정복하게 되는 알고리즘이다.
 {:.note title="attention"}

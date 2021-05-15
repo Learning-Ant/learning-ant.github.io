@@ -10,7 +10,7 @@ category: language
 tag: [c]
 ---
 
-# 다차원 배열
+# [C/C++]다차원 배열
 
 ## 다차원 배열
 

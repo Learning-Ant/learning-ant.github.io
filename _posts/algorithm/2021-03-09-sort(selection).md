@@ -10,7 +10,7 @@ category: algorithm
 tag: [sort]
 ---
 
-# 정렬(Sort)의 개요와 선택정렬(Selection Sort)
+# [Sort]정렬(Sort)의 개요와 선택정렬(Selection Sort)
 
 일반적으로 알고리즘을 공부할 때 가장 먼저 풀어보는 문제는 '정렬(Sort)' 문제이다. <u>정렬만큼 알고리즘의 효율성 차이를 극명하게 보여주는 것이 없기 때문이다.</u>
 {:.note title="attetion"}

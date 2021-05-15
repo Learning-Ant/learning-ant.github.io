@@ -10,7 +10,7 @@ category: data-structure
 tag: [List,c]
 ---
 
-# 환형 링크드 리스트(Circular Linked List)
+# [List]환형 링크드 리스트(Circular Linked List)
 
 > `Circular Linked List`는 환형으로 연결된 리스트라는 의미로, 헤드와 테일이 연결된 리스트이다.
 {:.note title="attention"}

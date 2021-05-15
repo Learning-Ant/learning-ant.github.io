@@ -10,7 +10,7 @@ category: algorithm
 tag : [dynamic]
 ---
 
-# 동적 계획법(Dynamic Programming)
+# [Dynamic Programming]동적 계획법
 
 > 동적 계획법은 이미 한 번 푼 적 있는 문제를 저장해두었다가 풀어가며 최종적으로 구하고자하는 답을 구하는 과정이다. 문제를 풀기위한 테이블을 미리 작성해 두고 하나씩 채워가며 최종적으로 원하는 답을 구하는 것이라 할 수 있다.
 {:.note title="attention"}

@@ -10,7 +10,7 @@ category: algorithm
 tag: [string]
 ---
 
-# KMP 알고리즘(Knuth-Morris-Pratt Algorithm) 
+# [String Search]KMP 알고리즘(Knuth-Morris-Pratt Algorithm) 
 
 > KMP 알고리즘은 비교할 필요가 없는 부분은 지나치는 알고리즘이다. 패턴과 본문을 한 차례 비교하고나면 다음 단계의 탐색에서 사용할 수 있는 정보가 남고, 이 정보를 이용해 불필요한 비교를 피하는 것이다.
 {:.note title="attention"}

@@ -10,7 +10,7 @@ category: algorithm
 tag : [greedy]
 ---
 
-# 허프만 코딩(Huffman Coding)
+# [Greedy]허프만 코딩(Huffman Coding)
 
 > 허프만 코딩은 탐욕 알고리즘을 사용해 설계된 압축 알고리즘이다. 보통 우리가 접하게되는 mp3나 jpeg의 포맷들이 이 허프만 코딩을 이용하는 압축 데이터 포맷 중 하나이다. 이 허프만 코딩을 이해하려면 먼저 "고정 길이 코드"와 "접두어 코드"에 대해 이해해야 한다.
 {:.note title="attention"}

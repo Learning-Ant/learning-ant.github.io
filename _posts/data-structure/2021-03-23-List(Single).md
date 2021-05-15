@@ -10,7 +10,7 @@ category: data-structure
 tag: [List,c]
 ---
 
-# 싱글 링크드 리스트(Single Linked List)
+# [List]싱글 링크드 리스트(Single Linked List)
 
 > 리스트 중의 하나인 링크드 리스트는 해석하자면 `연결해서 만드는 리스트`라는 의미가 된다. 그럼 어떤 것을 연결한 것일까?  
 > 리스트의 각 요소는 노드(Node)라고 부른다. 노드는 우리말로 `마디`라는 의미이다. 이 노드를 연결한 것이 바로 `Linked List`이다.

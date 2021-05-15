@@ -10,7 +10,7 @@ category: language
 tag: [c]
 ---
 
-# 매크로와 전처리기(Preprocessor)
+# [C/C++]매크로와 전처리기(Preprocessor)
 
 ## 전처리기에 의한 매크로 처리
 

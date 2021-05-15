@@ -9,7 +9,7 @@ sitemap: false
 category: spring
 ---
 
-## Spring-Tool-Suite에서 Import하기
+## [Spring]Spring-Tool-Suite에서 Import하기
 
 1. 먼저 프로젝트를 불러와서 저장할 폴더를 만듭니다.
    저는 `SPRING0914/project/workspace`의 경로로 폴더를 생성했습니다.

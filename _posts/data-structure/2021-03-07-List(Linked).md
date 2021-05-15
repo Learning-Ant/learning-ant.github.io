@@ -9,7 +9,7 @@ category: data-structure
 tag: [List]
 ---
 
-# List(3)-LinkedList
+# [List]List(3)-LinkedList
 
 
 ### Data-Structure

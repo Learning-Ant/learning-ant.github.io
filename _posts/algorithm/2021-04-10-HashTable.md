@@ -10,7 +10,7 @@ category: algorithm
 tag: [hash]
 ---
 
-# 해시 테이블(Hash Table)
+# [Hash]해시 테이블
 
 > 해시의 정의
   : <u>입력받은 데이터를 토대로 새로운 값을 만드는 것</u>을 [해시(Hash)]()라고 한다.

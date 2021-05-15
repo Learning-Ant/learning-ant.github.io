@@ -10,7 +10,7 @@ category: language
 tag: [c]
 ---
 
-# printf()와 scanf()함수에 대한 고찰
+# [C/C++]printf()와 scanf()함수에 대한 고찰
 
 ## printf
 

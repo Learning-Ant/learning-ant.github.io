@@ -10,7 +10,7 @@ category: algorithm
 tag : [backtracking]
 ---
 
-# 백트래킹
+# [Backtracking]백트래킹
 
 > 백트래킹은 해가 될 수 있는 경우들 중 특정 조건을 만족시키는 모든 해를 찾는 알고리즘이다. 즉, 해가 하나 이상 존재하는 경우에 쓰일 수 있는 알고리즘이다.
 {:.note title="attention"}

@@ -10,7 +10,7 @@ category: algorithm
 tag: [search]
 ---
 
-# 레드 블랙 트리(Red Black Tree)
+# [Red Black Tree]레드 블랙 트리
 
 > 이전 포스팅에서 마지막에 이진탐색트리의 치명적인 결점에 대해 언급했다. 이를 보완해 시간복잡도를 logn으로 바인드 할 수 있도록 한 Tree 구조가 있다. 몇 가지 제한사항을 두고 Tree를 구성할 수 있게 함으로써 기형적인 구조가 되어 시간복잡도에 영향이 가지 않도록 한 것이다.
 {:.note title="attention"}

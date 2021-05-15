@@ -10,7 +10,7 @@ category: data-structure
 tag: [stack,c]
 ---
 
-# 링크드 리스트로 구현하는 스택(Stack)
+# [Stack]링크드 리스트로 구현하는 스택
 
 > LinkedList로도 스택을 구현할 수 있는데, 배열로 구현했을 때는 용량의 제한을 둬야했지만 List는 그 제한이 사라진다.
 {:.note title="attention"}

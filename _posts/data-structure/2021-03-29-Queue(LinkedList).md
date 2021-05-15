@@ -10,7 +10,7 @@ category: data-structure
 tag: [queue,c]
 ---
 
-# 큐(LinkedList Queue)
+# [Queue]링크드 큐
 
 ## 순환 큐 vs 링크드 큐
 

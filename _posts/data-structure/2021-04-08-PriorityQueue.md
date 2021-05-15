@@ -10,7 +10,7 @@ category: data-structure
 tag: [queue]
 ---
 
-# 우선순위 큐와 힙
+# [Queue]우선순위 큐와 힙
 
 ## 우선순위 큐
 

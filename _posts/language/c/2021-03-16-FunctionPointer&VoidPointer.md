@@ -10,7 +10,7 @@ category: language
 tag: [c]
 ---
 
-# 함수포인터와 void포인터
+# [C/C++]함수포인터와 void포인터
 
 ## 함수 포인터
 

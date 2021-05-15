@@ -10,7 +10,7 @@ category: language
 tag: [c]
 ---
 
-# Pointer와 Array
+# [C/C++]Pointer와 Array
 
 ## 포인터와 배열의 관계
 

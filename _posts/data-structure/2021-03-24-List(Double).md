@@ -10,7 +10,7 @@ category: data-structure
 tag: [List,c]
 ---
 
-# 더블 링크드 리스트(Double Linked List)
+# [List]더블 링크드 리스트(Double Linked List)
 
 > `Double Linked List`는 이중으로 연결된 리스트라는 의미이다. 이중으로 연결되어있다는 말의 의미는 한 노드에 다음 노드를 가리키는 포인터만 있는 것이 아닌
 > 현재 노드의 이전노드를 가리키는 포인터도 포함되어 있다는 것이다.

@@ -10,7 +10,7 @@ category: algorithm
 tag: [graph]
 ---
 
-# 그래프의 순회
+# [DFS&BFS]그래프의 순회
 
 > 그래프에서는 그 구조 상 특정 데이터를 찾는 알고리즘이나 모든 정점들을 순회하는 것도 쉽지 않다. 이번 포스트에서는 그래프를 순회하는 데 있어서 가장 기초적인 알고리즘인 DFS(Depth First Search), BFS(Breadth First Search)를 알아본다.
 {:.note title="attention"}

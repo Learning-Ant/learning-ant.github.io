@@ -10,7 +10,7 @@ category: algorithm
 tag: [sort]
 ---
 
-# 버블 정렬(Bubble Sort)
+# [Sort]버블 정렬(Bubble Sort)
 
 ### 다음의 숫자들을 오름차순으로 정렬하는 프로그램 만들기
 
