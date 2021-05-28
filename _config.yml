@@ -57,6 +57,8 @@ menu:
     url: /daily-life/
   - title: Spring
     url: /spring/
+  - title : React
+    url: /react/
   - title: Language
     url: /lang/
   - title: Data Structure
