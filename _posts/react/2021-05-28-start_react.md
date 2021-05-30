@@ -9,7 +9,7 @@ date: 2021-05-28 21:20:00 +0900
 category: react
 ---
 
-# [React.js] 시작하기
+# [React] React 시작하기
 
 > 
 {:.note title="attention"}
