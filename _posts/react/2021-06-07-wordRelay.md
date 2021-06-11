@@ -41,6 +41,113 @@ import React, { Component } from 'react';
 
 Component는 React 안에 존재하고 있다. React만 불러와도 되지만, 위와 같이 따로 구조분해문법을 통해 Component를 선언해주지 않는다면 우리는 React의 기능을 사용하기 위해 `React.~`과 같이 dot operator를 사용할 수 밖에 없다.  
 
+### render()
+
+> Component를 상속받은 class는 render()함수를 overriding해야한다. Component는 이 render 함수가 return 하는 요소를 화면에 뿌려주게 된다.
+{:.note title="attention"}
+
+```js
+class WordRelay extends Component {
+    render() {
+        return (
+            <h1>Hello, React!</h1>
+            // render함수에서 return 되는 태그는
+            // 단 하나의 최상위 태그만을 허용한다.
+        );
+    }
+}
+```
+
+위와 같이 render함수의 return에 jsx로 작성한 요소들이 지정한 곳에 Component로 흩뿌려지게 된다. 얼핏보면 그저 HTML을 적어준 것으로 보일 수 있지만 지금 작성하는 문서는 html문서가 아니기 때문에 tag를 읽을 수 없다. 그럼에도 이러한 tag를 사용할 수 있는 이유는 react에서 보다 편하게 코드를 작성할 수 있도록 지원하는 jsx때문이다.
+
+### State
+
+> Component에서의 '변수'라고 할 수 있는 State가 있다. 이 State가 변경되면 Component가 새로 Rendering 되면서 변경된 State의 값이 적용되게 된다.
+{:.note title="attention"}
+
+바로 그 작성방법에 대해 알아보자. document에 따르면 state의 선언은 아래와 같이 하면 된다고 제시해준다.
+
+```js
+class WordRelay extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            state1 : '',
+            state2 : 0,
+            state3 : false,
+            state4 : new Date(),
+        };
+    }
+
+    render() {
+        return (
+            <h1>Hello, React!</h1>
+        );
+    }
+}
+```
+
+
+
+예시처럼 state는 객체 형태로 선언해주며, 그 안에는 여러 property들이 존재한다. 이 state들의 타입은 js에서 지원하는 타입들이 모두 가능하다.  
+위와 같은 방법으로도 가능하지만 constructor없이 바로 선언해주는 방법도 가능하다.
+
+```js
+class Wordrelay extends Component {
+    state = {
+        state1 : '',
+        state2 : 0,
+        state3 : false,
+        state4 : new Date(), 
+    }
+
+    render() {
+        return (
+            <h1>Hello, React!</h1>
+        );
+    }
+}
+```
+
+### event
+
+> 그럼 이제 저 state들을 변경하기 위해서는 어떤 방법을 사용해야할까?  
+> 어떤 이벤트가 발생할 때 state가 변경되면 Component가 새로 rendering될 것이다.
+> 즉, event로 state를 변경하고 Component를 re-rendering시킨다.
+{:.note title="attention"}
+
+본격적으로 WordRelay Game을 만들어보자.  
+먼저, 뼈대인 입력칸과 바로 전에 입력된 단어를 표시해줄 div를 render함수의 return으로 적어주면 다음과 같은 Component가 만들어진다.
+
+```js
+class Wordrelay extends Component {
+    state = {
+        word = '무지개',
+        value = '',
+        result = '',
+    };
+
+    render() {
+        return (
+            <div>
+                <div>{this.state.word}</div>
+                <form>
+                    <input value={this.state.value} />
+                    <button>입력</button>
+                </form>
+                <div>{this.state.result}</div>
+            </div>
+        );
+    }
+}
+```
+
+* State
+    1. word : 바로 이전에 제시된 단어를 표시
+    2. value : 입력칸에 입력되는 데이터
+    3. result : 게임 법칙에 어긋나는지 판단한 결과 표시
+
+
 
 ```js
 const React = require('react');
