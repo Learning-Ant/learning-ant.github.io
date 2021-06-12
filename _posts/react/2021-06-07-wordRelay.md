@@ -147,7 +147,135 @@ class Wordrelay extends Component {
     2. value : 입력칸에 입력되는 데이터
     3. result : 게임 법칙에 어긋나는지 판단한 결과 표시
 
+하지만 실제로 입력창에 입력을 하려고하면 입력이 되지 않는다. 입력창에 입력되어있는 value가 state로 가져왔기 때문인데, React에서는 이를 event로 관리를 해주어야 한다.  
 
+#### onChange, setState
+
+> input에 value를 변경하는 이벤트를 input 태그에 추가하고, 거기에 할당되는 함수를 따로 설정한다.
+{:.note title="attention"}
+
+여기서 화살표 함수를 사용하는 것이 좋다. 화살표 함수를 사용해야 this binding이 좀 더 편해진다. 화살표 함수를 사용하지 않으면 bind(this)를 통해 해당 객체에 대한 binding이 필요해진다.
+
+* setState
+
+    State를 변경할 때는 setState를 사용하게 된다. 여기에 객체를 전달해 주면서 State안에 있는 요소를 변경할 수 있게 되는 것이다.
+
+이를 고려해 입력창에 입력이 가능해지도록 변경하면..
+
+```js
+class WordRelay extends Component {
+    state = {
+        word: '무지개',
+        value: '',
+        result: '',
+    };
+    
+    onChangeInput = (e) => {
+        this.setState({ value: e.target.value });
+    };
+
+    render() {
+        return (
+            <>
+                <div>{this.state.word}</div>
+                <form>
+                    <input value={this.state.value} onChange={this.onChangeInput} />
+                    <button>입력</button>
+                </form>
+                <div>{this.state.result}</div>
+            </>
+        );
+    }
+}
+```
+
+추가적으로 설명하면 input의 상태가 변경(여기서는 value의 변경)이 event로 발생하면 onChange에 저장된 함수가 실행되고, setState로 전달된 객체를 토대로 WordRelay의 State가 변경된다. State가 변경되면 Component가 re-rendering되므로 입력창에 입력되어 있는 값이 변경되는 것이다. React에서는 이런식으로 입력창을 관리하게 된다.
+
+#### Submit, ref
+
+> submit 역시 event이므로 별로 다를 것은 없다.
+{:.note title="attention"}
+
+```js
+// Form에 onSubmit을 추가
+<form onSubmit={}>
+    ...
+</form>
+```
+
+그 후 submit할 때 작동할 로직을 함수로 만들어준다.
+
+```js
+// Submit 시 이전 단어의 끝 글자와 입력된 글자의 첫 글자를 비교하고
+// 그 결과를 표시
+onSubmitForm = (e) => {
+    e.preventDefault(); // 기존 event 없애기
+    if(this.state.word[this.state.word.length - ] === this.state.value[0]) {
+        this.setState({
+            result: '딩동댕',
+            word: this.state.value,
+            value: ''
+        })
+    } else {
+        this.setState({
+            result: '땡',
+            value: ''
+        })
+    }
+}
+```
+
+이렇게 만든 `onSubmitForm`을 `onSubmit={onSubmitForm}`에 넣어주면 submit할 때 만들어준 함수가 실행되게 된다.  
+
+여기에 추가적으로 submit 후 입력창으로 focus를 하고 싶다면 ref를 사용하면 된다.  
+
+우선 focus를 주고 싶은 input에 ref를 부여해 주고, 이를 저장할 공간을 선언해준다.
+
+```js
+input; // input에 대한 참조
+onRefInput = (c) => {
+        this.input = c;
+    }
+render() {
+    return (
+        <>
+            <div>{this.state.word}</div>
+            <form onSubmit={this.onSubmitForm}>
+                <input ref={this.onRefInput} value={this.state.value} onChange={this.onChangeInput} />
+                <button>입력</button>
+            </form>
+            <div>{this.state.result}</div>
+        </>
+    );
+}
+```
+
+공간에 저장하는 함수 `onRefInput`을 따로 정의하고 이를 input의 ref에 할당해준다. 이렇게 해주면 이제 input에 focus를 할 수 있게 된다.  
+
+우리가 focus해주려는 시점이 submit한 직후이므로 이를 `onSubmitForm` 함수의 끝부분에 focus해주는 코드를 적어준다.
+
+```js
+onSubmitForm = (e) => {
+    e.preventDefault();
+    if (this.state.word[this.state.word.length - 1] === this.state.value[0]) {
+        this.setState({
+            result: '딩동댕',
+            word: this.state.value,
+            value: '',
+        });
+    } else {
+        this.setState({
+            result: '땡',
+            value: ''
+        })
+    }
+    this.input.focus(); // focus
+};
+```
+
+이렇게 그저 글자의 비교만으로 이루어지는 단순한 끝말잇기가 완성되었다.  
+
+#### 전체 코드
 
 ```js
 const React = require('react');
@@ -162,7 +290,7 @@ class WordRelay extends Component {
     };
     onSubmitForm = (e) => {
         e.preventDefault();
-        if (this.state.word[this.state.word.leanth - 1] === this.state.value[0]) {
+        if (this.state.word[this.state.word.length - 1] === this.state.value[0]) {
             this.setState({
                 result: '딩동댕',
                 word: this.state.value,
@@ -201,12 +329,6 @@ class WordRelay extends Component {
 
 module.exports = WordRelay;
 ```
-
-![WordRelay](/assets/img/about-react/word-relay/1.gif)
-{:.lead loading="lazy" align="center"}
-
-끝말잇기
-{:.figcaption}
 
 ## Hooks
 
