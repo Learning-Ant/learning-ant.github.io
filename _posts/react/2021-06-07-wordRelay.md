@@ -332,11 +332,145 @@ module.exports = WordRelay;
 
 ## Hooks
 
-```js
+> WebGame을 진행하면서 React에서 추천하는 Hooks 역시 같이 진행할 생각이다. Hooks는 React에 생긴 최신 기능이며, 앞으로 만들 Component들은 이를 활용하길 추천하고 있다.  
+> 그렇다고 이미 class형으로 만든 Component들 모두를 Hooks로 다시 만들 필요는 없다. React가 공식적으로 class형도 계속 지원할 것이라고 했으니 말이다.
+{:.note title="Attention"}
 
+Hooks에서는 class형과 달리 state를 useState를 통해 정의하고 수정한다.
+
+예를 들어, 위에서 만든 State들을 useState를 통해 하게되면 아래와 같이 할 수 있다.
+
+```js
+const React = require('react');
+const { useState } = React;
+// 다음 포스팅부터는 import ~ from ~ 방식을 쓸 예정
+
+const WordRealy = () = {
+    const [word, setWord] = useState('무지개');
+    const [value, setValue] = useState('');
+    const [result, setResult] = useState('');
+}
+```
+
+기존의 class형과 비교하면 좀 귀찮아 진 것처럼 보일 수 있다. 하지만 위 과정을 제외하면 오히려 code의 양은 줄어들고, 훨씬 편한 coding이 가능해진다.  
+
+자 그럼 이 때 state를 변경하려면 어떤 것을 써야할까? 아마 프로그래밍을 좀 해본 사람들은 감이 좀 올 것이다. `setWord, setValue, setResult`를 사용해 각각의 state를 변경할 수 있다.   
+
+class형으로 만든 Component에서 State를 바꾸는 `onChangeInput`을 Hooks로 바꿔보면 아래와 같다.
+
+```js
+// class형
+onChangeInput = (e) => {
+    this.setState({ value: e.target.value });
+};
+
+// ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+// Hooks
+onChangeInput = (e) => {
+    setValue(e.target.value);
+}
+```
+
+둘의 차이점을 살펴보면, 일단 this가 사라졌다. class형에서 여기저기 사용된 this들이 모두 사라진다는 전조가 보인다.  
+또한 특정 State의 변경을 위해 객체를 전달하던 setState와 달이 이미 setValue로써 변경하려는 State를 특정했으므로 그 값만 전달하는 모습이 보인다.  
+
+이를 활용해 `onSubmitForm` 역시 변경해보자.
+
+```js
+// class형
+onSubmitForm = (e) => {
+    e.preventDefault();
+    if (this.state.word[this.state.word.length - 1] === this.state.value[0]) {
+        this.setState({
+            result: '딩동댕',
+            word: this.state.value,
+            value: '',
+        });
+    } else {
+        this.setState({
+            result: '땡',
+            value: ''
+        })
+    }
+    // this.input.focus();
+};
+
+// ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+// Hooks
+onSubmitForm = (e) => {
+    e.preventDefault();
+    if (word[word.length - 1] === value[0]) {
+        setResult('딩동댕');
+        setWord(value);
+        setValue('');
+    } else {
+        setResult('땡');
+        setValue('');
+    }
+}
+```
+
+일단 focus를 수행하기 위한 ref의 변경법을 제외하고 State들을 변경하는 부분들부터 살펴보자.
+
+예상대로 Hooks에서는 this가 사라졌다. 이렇게 code의 양이 상당히 줄어들게 된다. 또한 각 State가 무엇인지는 이미 `set~`에 명시되어 있으므로 이 또한 객체르 전달해 줄 필요없이 각각의 set으로 가능하게 되었다.  
+
+딱 보기에도 양이 상당히 줄어들었음을 알 수 있다.
+
+### Ref
+
+> Hooks에서의 ref는 `useRef`를 사용한다.
+{:.note title="attention"}
+
+ref는 `useRef`를 사용해 구현할 수 있는데 기존의 class형보다 훨씬 간단해 진다.  
+
+먼저 `useState`처럼 `useRef`를 가져와 준 후 저장할 공간을 설정해주고 거기에 `useRef`로 이를 설정한다.
+
+```js
 const React = require('react');
 const { useState, useRef } = React;
-// const { Component } = React; // class형에서 사용
+
+const WordRelay= () => {
+    const inputRef = useRef(null);
+
+    return {
+        <div>
+            <form>
+                ///////////////////////
+                <input ref={inputRef}/>
+                ///////////////////////
+                <button>입력</button>
+            </form>
+        </div>
+    };
+}
+```
+
+위와 같이 ref와 useRef를 사용해 준 후 아래처럼 사용하고자 하는 곳에 `inputRef.current.focus()`를 추가해주면 된다.
+
+```js
+onSubmitForm = (e) => {
+    e.preventDefault();
+    if (word[word.length - 1] === value[0]) {
+        setResult('딩동댕');
+        setWord(value);
+        setValue('');
+    } else {
+        setResult('땡');
+        setValue('');
+    }
+    //////////////////////////
+    inputRef.current.focus();
+    //////////////////////////
+}
+```
+
+### 전체 코드
+
+```js
+const React = require('react');
+const { useState, useRef } = React;
 
 // Hooks
 const WordRelay = () => {
