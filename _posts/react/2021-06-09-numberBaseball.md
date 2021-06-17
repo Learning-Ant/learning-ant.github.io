@@ -202,7 +202,7 @@ inputRef = createRef();
 // }
 ```
 
-onChangeInput은 이전과 달라진점이 없고, inputRef는 새롭게 `createRef()`를 사용했다. 그렇게 특별한 점은 없고 요소에 접근하기위한 참조를 만들 때 딱히 조정할 부분이 없다면 craeteRef를 통해 간단하게 참조를 형성할 수 있다.
+onChangeInput은 이전과 달라진점이 없고, inputRef는 새롭게 `createRef()`를 사용했다. 특별한 점은 없고 요소에 접근하기위한 참조를 만들 때 딱히 조정할 부분이 없다면 craeteRef를 통해 간단하게 참조를 형성할 수 있다.
 
 ### 전체 코드
 
