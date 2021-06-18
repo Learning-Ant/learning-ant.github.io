@@ -297,6 +297,95 @@ export default ResponseCheck;
 
 ## Hooks
 
+> 앞에서 구현한 기능(setTimeout Handling)을 Hooks에서는 useRef를 이용해 구현한다.
+{:.note title="attention"}
+
+### State, Component, return
+
+> class형에서 Hooks로의 변환
+{:.note title="attention"}
+
+```js
+import React, { Component, useState, useRef } from 'react';
+
+// Hooks
+const ResponseCheck = () => {
+    const [state, setState] = useState('waiting');
+    const [message, setMessage] = useState('클릭해서 시작하세요');
+    const [result, setResult] = useState([]);
+    // useRef의 값이 변경될때는 rendering이 실행되지 않는다.
+    // useRef는 화면에 영향을 주지 않음
+    const timeout = useRef(null);
+    const startTime = useRef(null);
+    const endTime = useRef(null);
+
+    return (
+        <>
+            <div id="screen"
+                className={state}
+                onClick={onClickScreen}
+            >
+                {message}
+            </div>
+            {renderAverage()}
+        </>
+    );
+};
+
+export default ResponseCheck;
+```
+
+#### State
+
+앞선 포스팅처럼 class를 Hooks로 변환하면 위와 같이 된다. 달라진점이 있다면 class형에서는 그저 선언만 해주었던 것이 Hooks에서는 `useRef()`함수로 선언 되어 있다는 점이다. 주석으로 달아두었듯이 useRef로 선언된 객체가 변경되더라도 re-rendering은 일어나지 않는다.
+
+#### onClickScreen, onReset, renderAverrage
+
+```js
+const onClickScreen = () => {
+    if (state === 'waiting') {
+        setState('ready');
+        setMessage('초록색이 되면 클릭하세요');
+        startTime = new Date();
+        timeout.current = setTimeout(() => {
+            setState('now');
+            setMessage('지금 클릭');
+            startTime.current = new Date();
+        }, Math.floor(Math.random() * 1000) + 2000);
+    } else if (state === 'ready') { // 초록색이 되기 전에 클릭한 경우
+        clearTimeout(timeout.current); // Timeout 초기화
+        setState('waiting');
+        setMessage('성급하셨네요. 초록색이 되면 클릭해주세요!');
+    } else if (state === 'now') { // 반응 속도 체크
+        endTime.current = new Date();
+        setState('waiting');
+        setMessage('클릭해서 시작하세요');
+        setResult((prevResult) => {
+            return [...prevResult, endTime.current - startTime.current];
+        });
+    }
+};
+
+const onReset = () => {
+    setResult([]);
+};
+
+const renderAverage = () => {
+    return result.length === 0
+        ? null
+        : <>
+            <div>평균 시간:{result.reduce((a, c) => a + c) / result.length}ms</div>
+            <button onClick={onReset}>리셋</button>
+        </>
+}
+```
+
+Hooks가 좀더 코드양이 적고, 간결한 느낌을 준다. 한가지 유의할 점은 `useRef`를 사용한 객체는 `current`를 사용해주어야 한다는 점이다.
+
+### 전체 코드
+
+#### ResponseCheck.jsx(Hooks)
+
 ```js
 import React, { Component, useState, useRef } from 'react';
 
