@@ -61,29 +61,28 @@ Component에서 필요한 state는 위와 같다.
 
 ```js
 render() {
-        const { result, value, tries } = this.state;
-        return (
-            <> {/* React.Flagment */}
-                <h1>{result}</h1>
-                <form onSubmit={this.onSubmitForm}>
-                    <input ref={this.inputRef} maxLength={4} value={value} onChange={this.onChangeInput} />
-                </form>
-                {/*
-                    React에서는 key를 기준으로 Element의 추가, 수정, 삭제를
-                    판단하기 때문에 index를 key로 설정하면 배열의 순서가 바뀔 때 문제가 생긴다.
-                    그렇기에 항상 고유한(Unique) 값을 가지는 key를 설정해주어야 한다.
-                */}
-                <div>시도: {tries.length}</div>
-                <ul>
-                    {tries.map((n, i) => {
-                        return (
-                            <Try key={`${i + 1}차 시도 :`} tryInfo={n} />
-                        );
-                    })}
-                </ul>
-            </>
-        )
-    }
+    const { result, value, tries } = this.state;
+    return (
+        <> {/* React.Flagment */}
+            <h1>{result}</h1>
+            <form onSubmit={this.onSubmitForm}>
+                <input ref={this.inputRef} maxLength={4} value={value} onChange={this.onChangeInput} />
+            </form>
+            {/*
+                React에서는 key를 기준으로 Element의 추가, 수정, 삭제를
+                판단하기 때문에 index를 key로 설정하면 배열의 순서가 바뀔 때 문제가 생긴다.
+                그렇기에 항상 고유한(Unique) 값을 가지는 key를 설정해주어야 한다.
+            */}
+            <div>시도: {tries.length}</div>
+            <ul>
+                {tries.map((n, i) => {
+                    return (
+                        <Try key={`${i + 1}차 시도 :`} tryInfo={n} />
+                    );
+                })}
+            </ul>
+        </>
+    )
 }
 ```
 
