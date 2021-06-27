@@ -11,7 +11,208 @@ category: react
 
 # [React, WebGame] 지뢰찾기
 
+## CSS
+
+우선 지뢰찾기를 진행할 Table에 대한 CSS부터 구성해보자.
+
+```css
+table.mine,
+td.mine {
+    border: 1px solid white;
+    text-align: center;
+    font-size: 15px;
+}
+
+td.mine {
+    width: 30px;
+    height: 30px;
+}
+```
+
 ## Hooks
+
+> 이전 포스팅에서는 dispatch와 `useReducer`를 통해 각 하위 Component로 dispatch를 전달해주고 상위의 State를 변경하는 Handling하는 방법에 대해 알아보았었다. 하지만 dispatch가 필요없는 중간 Component에도 하위 Component에 전달 해 주기 위해 전달해 주어야 했었다. `useContext`를 사용하면 이런 과정을 생략 할 수 있다.  
+> 지뢰찾기를 구현하면서 `useContext`를 활용해 dispatch를 사용하는 방법에 대해 알아보도록 한다.
+{:.note title="attention"}
+
+### Form, Td, Tr, Table
+
+> 지뢰찾기를 구현하기 위해 필요한 하위 Component들의 뼈대부터 만들어본다.
+{:.note}
+
+#### Form
+
+```js
+import React, { useState, useCallback, memo } from 'react';
+
+const Form = memo(() => {
+    const [row, setRow] = useState(10);
+    const [cell, setCell] = useState(10);
+    const [mine, setMine] = useState(20);
+
+    const onChangeRow = useCallback((e) => {
+        setRow(e.target.value);
+    }, [row]);
+    const onChangeCell = useCallback((e) => {
+        setCell(e.target.value);
+    }, [cell]);
+    const onChangeMine = useCallback((e) => {
+        setMine(e.target.value);
+    }, [mine]);
+
+    const onClickBtn = useCallback(() => {
+
+    }, []);
+
+    return (
+        <div>
+            <input type="number" placeholder="세로" value={row} onChange={onChangeRow} />
+            <input type="number" placeholder="가로" value={cell} onChange={onChangeCell} />
+            <input type="number" placeholder="지뢰개수" value={mine} onChange={onChangeMine} />
+            <button onClick={onClickBtn} >시작</button>
+        </div>
+    );
+});
+
+export default Form;
+```
+
+지뢰판을 만들 때 가로 세로의 값과 지뢰의 개수를 받아서 구성하기 위한 Form Component이다. 특별한 것은 없고 버튼을 클릭했을 때 `onClickBtn`의 로직으로 상위 Component의 State의 값을 전달하기 위해 `useContext`와 dispatch를 사용해 입력받은 값을 설정할 예정이다. 그렇기에 아직 `onClickBtn`의 로직은 구현되지 않은 상태이다.
+
+#### Td
+
+```js
+import React, { useContext, useCallback, memo, useMemo } from 'react';
+import { CODE, OPEN_CELL, CLICK_MINE, FLAG_CELL, QUESTION_CELL, NORMALIZE_CELL, TableContext } from './MineSearch';
+
+const getTdStyle = (code) => {
+    switch (code) {
+        case CODE.NORMAL:
+        case CODE.MINE:
+            return {
+                background: '#444',
+            };
+        case CODE.CLICKED_MINE:
+        case CODE.OPENED:
+            return {
+                background: 'white',
+            };
+        case CODE.QUESTION:
+        case CODE.QUESTION_MINE:
+            return {
+                background: 'yellow'
+            };
+        case CODE.FLAG:
+        case CODE.FLAG_MINE:
+            return {
+                background: 'red',
+            };
+        default:
+            return {
+                background: 'white',
+            };
+    }
+};
+
+const getTdText = (code) => {
+    switch (code) {
+        case CODE.NORMAL:
+            return '';
+        case CODE.MINE:
+            return 'X';
+        case CODE.CLICKED_MINE:
+            return '펑';
+        case CODE.FLAG_MINE:
+        case CODE.FLAG:
+            return '!';
+        case CODE.QUESTION:
+        case CODE.QUESTION_MINE:
+            return '?';
+        default:
+            return code || '';
+    }
+};
+
+const MineTd = memo(({ rowIndex, cellIndex }) => {
+    const { tableData, dispatch, halted } = useContext(TableContext);
+
+    const onClickTd = useCallback((e) => {
+        e.preventDefault();
+        console.log('clicked');
+        if (halted) {
+            return;
+        }
+        switch (tableData[rowIndex][cellIndex]) {
+            case CODE.OPENED:
+            case CODE.FLAG:
+            case CODE.FLAG_MINE:
+            case CODE.QUESTION:
+            case CODE.QUESTION_MINE:
+                return;
+            case CODE.NORMAL:
+                dispatch({ type: OPEN_CELL, row: rowIndex, cell: cellIndex });
+                return;
+            case CODE.MINE:
+                dispatch({ type: CLICK_MINE, row: rowIndex, cell: cellIndex });
+                return;
+            default:
+                return;
+        }
+    }, [tableData[rowIndex][cellIndex], halted]);
+
+    const onRightClickTd = useCallback((e) => {
+        e.preventDefault();
+        console.log('right-clicked');
+        if (halted) {
+            return;
+        }
+        switch (tableData[rowIndex][cellIndex]) {
+            case CODE.NORMAL:
+            case CODE.MINE:
+                dispatch({ type: FLAG_CELL, row: rowIndex, cell: cellIndex });
+                return;
+            case CODE.FLAG_MINE:
+            case CODE.FLAG:
+                dispatch({ type: QUESTION_CELL, row: rowIndex, cell: cellIndex });
+                return;
+            case CODE.QUESTION:
+            case CODE.QUESTION_MINE:
+                dispatch({ type: NORMALIZE_CELL, row: rowIndex, cell: cellIndex });
+                return;
+            default:
+                return;
+        }
+    }, [tableData[rowIndex][cellIndex], halted]);
+
+    // return useMemo((
+    //     <td
+    //         style={getTdStyle(tableData[rowIndex][cellIndex])}
+    //         onClick={onClickTd}
+    //         onContextMenu={onRightClickTd}
+    //         className="mine"
+    //     >
+    //         {getTdText(tableData[rowIndex][cellIndex])}
+    //     </td>
+    // ), [tableData[rowIndex][cellIndex]]);
+
+    return <RealTd onClickTd={onClickTd} onRightClickTd={onRightClickTd} data={tableData[rowIndex][cellIndex]} />;
+});
+
+const RealTd = memo(({ onClickTd, onRightClickTd, data }) => {
+    return (
+        <td
+            style={getTdStyle(data)}
+            onClick={onClickTd}
+            onContextMenu={onRightClickTd}
+            className="mine"
+        >
+            {getTdText(data)}
+        </td>
+    );
+});
+
+export default MineTd;
+```
 
 ### 전체코드
 
