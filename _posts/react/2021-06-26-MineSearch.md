@@ -82,31 +82,10 @@ export default Form;
 #### Td
 
 ```js
-import React, { useContext, useCallback, memo, useMemo } from 'react';
-import { CODE, OPEN_CELL, CLICK_MINE, FLAG_CELL, QUESTION_CELL, NORMALIZE_CELL, TableContext } from './MineSearch';
+import React, { useCallback, memo, useMemo } from 'react';
 
 const getTdStyle = (code) => {
     switch (code) {
-        case CODE.NORMAL:
-        case CODE.MINE:
-            return {
-                background: '#444',
-            };
-        case CODE.CLICKED_MINE:
-        case CODE.OPENED:
-            return {
-                background: 'white',
-            };
-        case CODE.QUESTION:
-        case CODE.QUESTION_MINE:
-            return {
-                background: 'yellow'
-            };
-        case CODE.FLAG:
-        case CODE.FLAG_MINE:
-            return {
-                background: 'red',
-            };
         default:
             return {
                 background: 'white',
@@ -116,103 +95,135 @@ const getTdStyle = (code) => {
 
 const getTdText = (code) => {
     switch (code) {
-        case CODE.NORMAL:
-            return '';
-        case CODE.MINE:
-            return 'X';
-        case CODE.CLICKED_MINE:
-            return '펑';
-        case CODE.FLAG_MINE:
-        case CODE.FLAG:
-            return '!';
-        case CODE.QUESTION:
-        case CODE.QUESTION_MINE:
-            return '?';
         default:
             return code || '';
     }
 };
 
 const MineTd = memo(({ rowIndex, cellIndex }) => {
-    const { tableData, dispatch, halted } = useContext(TableContext);
 
     const onClickTd = useCallback((e) => {
         e.preventDefault();
-        console.log('clicked');
-        if (halted) {
-            return;
-        }
-        switch (tableData[rowIndex][cellIndex]) {
-            case CODE.OPENED:
-            case CODE.FLAG:
-            case CODE.FLAG_MINE:
-            case CODE.QUESTION:
-            case CODE.QUESTION_MINE:
-                return;
-            case CODE.NORMAL:
-                dispatch({ type: OPEN_CELL, row: rowIndex, cell: cellIndex });
-                return;
-            case CODE.MINE:
-                dispatch({ type: CLICK_MINE, row: rowIndex, cell: cellIndex });
-                return;
-            default:
-                return;
-        }
-    }, [tableData[rowIndex][cellIndex], halted]);
+        
+    }, []);
 
     const onRightClickTd = useCallback((e) => {
         e.preventDefault();
-        console.log('right-clicked');
-        if (halted) {
-            return;
-        }
-        switch (tableData[rowIndex][cellIndex]) {
-            case CODE.NORMAL:
-            case CODE.MINE:
-                dispatch({ type: FLAG_CELL, row: rowIndex, cell: cellIndex });
-                return;
-            case CODE.FLAG_MINE:
-            case CODE.FLAG:
-                dispatch({ type: QUESTION_CELL, row: rowIndex, cell: cellIndex });
-                return;
-            case CODE.QUESTION:
-            case CODE.QUESTION_MINE:
-                dispatch({ type: NORMALIZE_CELL, row: rowIndex, cell: cellIndex });
-                return;
-            default:
-                return;
-        }
-    }, [tableData[rowIndex][cellIndex], halted]);
+       
+    }, []);
 
-    // return useMemo((
-    //     <td
-    //         style={getTdStyle(tableData[rowIndex][cellIndex])}
-    //         onClick={onClickTd}
-    //         onContextMenu={onRightClickTd}
-    //         className="mine"
-    //     >
-    //         {getTdText(tableData[rowIndex][cellIndex])}
-    //     </td>
-    // ), [tableData[rowIndex][cellIndex]]);
-
-    return <RealTd onClickTd={onClickTd} onRightClickTd={onRightClickTd} data={tableData[rowIndex][cellIndex]} />;
-});
-
-const RealTd = memo(({ onClickTd, onRightClickTd, data }) => {
-    return (
+    return useMemo((
         <td
-            style={getTdStyle(data)}
+            style={getTdStyle(tableData[rowIndex][cellIndex])}
             onClick={onClickTd}
             onContextMenu={onRightClickTd}
             className="mine"
         >
-            {getTdText(data)}
+            {getTdText(tableData[rowIndex][cellIndex])}
         </td>
-    );
+    ), [tableData[rowIndex][cellIndex]]);
+
 });
 
 export default MineTd;
 ```
+
+지금은 구현되지 않고 뼈대만 있어 무슨 역할을 할지 잘 알 수 없지만 점점 `Context API`를 활용해 data flow가 어떻게 흘러가는지 살펴보면서 조금씩 채워나가도록 한다.
+
+#### MineTr, MineTable
+
+##### MineTr
+
+```js
+import React, { memo } from 'react';
+import MineTd from './MineTd';
+
+const MineTr = memo(({ rowIndex }) => {
+    return (
+        <tr>
+            <MineTd key={i} rowIndex={rowIndex} cellIndex={i} />
+        </tr>
+    );
+});
+
+export default MineTr;
+```
+
+##### MineTable
+
+```js
+import React, { memo } from 'react';
+import MineTr from './MineTr';
+
+const MineTable = memo(() => {
+    return (
+        <table className="mine">
+            <tbody>
+                <MineTr key={i} className="mine" rowIndex={i} />
+            </tbody>
+        </table>
+    )
+});
+
+export default MineTable;
+```
+
+#### MineSearch
+
+```js
+import React from 'react';
+import MineTable from './MineTable';
+import Form from './Form';
+
+const MineSearch = () => {
+    return (
+        <>
+            <Form />
+            <div>{timer}</div> {/*경과 시간*/}
+            <MineTable />
+            <div>{result}</div> {/*게임 결과*/}
+        </>
+    );
+}
+
+export default MineSearch;
+```
+
+먼저 가장 기본적인 형태로 Component를 구성해보았다. 지뢰판에 대한 정보를 입력하는 `Form`, 경과시간을 표시해주는 `timer`, 실제 지뢰판을 구성할 `MineTable`, 게임 결과를 표시해줄 `result`.  
+
+이제 Context API를 활용해 차근차근 단계를 밟아가며 구현에 들어가보도록 하자.
+
+### Context API
+
+> Context is designed to share data that can be considered “global” for a tree of React components, such as the current authenticated user, theme, or preferred language. For example, in the code below we manually thread through a “theme” prop in order to style the Button component:
+
+> Context는 현재 인증된 사용자, 테마 혹은 선호 언어와 같은 tree형태의 React Component에 대해 global로 다룰 수 있는 데이터를 공유하기위해 디자인되었다. 예를 들어, 아래의 코드에서 우리는 Button component를 style하기 위한 theme prop을 통해 수동적으로 thread한다.
+
+이해를 돕기 위해 설명을 그림으로 표현해보면,
+
+![Context API](/assets/img/about-react/MineSearch/ContestAPI.png)
+{:.lead loading="lazy" align="center"}
+
+Context API
+{:.figcaption}
+
+Context를 만들고, 그림에는 없지만 reducer를 통해 dispatch의 action을 받고 받은 action에 따라 로직을 수행할 수 있도록 지뢰찾기를 구현해 나갈 것이다.
+
+---
+---
+---
+---
+
+정리중
+
+#### createContext
+
+
+#### Context.Provider
+
+
+#### useContext
+
 
 ### 전체코드
 
