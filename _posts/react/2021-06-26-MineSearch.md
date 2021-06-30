@@ -276,7 +276,7 @@ const initialState = {
 우리가 사용하는 Context는 TableContext이므로 예시를 맞게 변경하면,
 
 ```js
-<TableContext.Provider value={{ tableData: state.tableData, state.halted, dispatch }}>
+<TableContext.Provider value={ { tableData: state.tableData, state.halted, dispatch } }>
 ```
 
 하지만 주의사항이 있다. Hooks는 re-rendering이 발생할 때마다 value에 새로운 객체를 생성해 전달하게 될 것이다. 그렇기에 이에 대한 cashing 작업이 필요하다. useMemo를 통해 cashing을 해준다.
