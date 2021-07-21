@@ -5,7 +5,7 @@ description: >
   정보처리기사(실기) 후기
 hide_description: true
 category: daily-life
-date: 2021-05-17 22:24:00 +0900
+date: 2021-07-21 23:02:50 +0900
 sitemap: false
 tag: [blog]
 ---
