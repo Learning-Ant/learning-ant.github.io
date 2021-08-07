@@ -17,7 +17,7 @@
         class="sidebar-nav-item" {% if node.rel %}rel="{{ node.rel }}" {% endif %}>{{ node.title }}</a>
       {% if subnodes != empty %}
       <button class="spread-btn" onclick="javascript:spread({{ count }})">
-        <label id="spread-icon-{{ count }}" class="material-icons">arrow_right</label>
+        <label id="spread-icon-{{ count }}" class="material-icons">▶</label>
       </button>
       {% endif %}
     </div>
