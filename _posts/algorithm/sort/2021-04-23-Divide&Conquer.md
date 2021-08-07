@@ -7,6 +7,7 @@ hide_description: false
 sitemap: false
 date: 2021-04-23 19:24:00 +0900
 category: algorithm
+tag: [sort]
 ---
 
 # [Divide&Conquer]분할 정복 알고리즘

@@ -7,7 +7,7 @@ hide_description: false
 sitemap: false
 date: 2021-04-14 16:02:00 +0900
 category: algorithm
-tag: [graph]
+tag: [search, graph]
 ---
 
 # [Minimum Spanning Tree]최소 신장 트리

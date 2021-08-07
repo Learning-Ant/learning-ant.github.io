@@ -7,7 +7,7 @@ hide_description: false
 sitemap: false
 date: 2021-04-16 18:02:00 +0900
 category: algorithm
-tag: [graph]
+tag: [search, graph]
 ---
 
 # [Dijkstra Algorithm]최단 경로 탐색

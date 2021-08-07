@@ -7,7 +7,7 @@ hide_description: false
 sitemap: false
 date: 2021-04-13 20:02:00 +0900
 category: algorithm
-tag: [graph]
+tag: [search, graph]
 ---
 
 # [DFS&BFS]그래프의 순회
