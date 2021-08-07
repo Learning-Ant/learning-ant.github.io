@@ -1,5 +1,5 @@
 ---
-layout: list
+layout: tag-list
 type: tag
 title: List
 slug: List

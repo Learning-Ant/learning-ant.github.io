@@ -1,5 +1,5 @@
 ---
-layout: list
+layout: tag-list
 type: tag
 title: C/C++
 slug: c
