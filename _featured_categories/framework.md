@@ -3,15 +3,15 @@
 layout: list
 type: category
 # The title of the tag's page.
-title: Spring
-permalink: /spring/
+title: Framework
+permalink: /framework/
 # The name of the tag, used in a post's front matter (e.g. tags: [<slug>]).
-slug: spring
+slug: framework
 sidebar: true
 order: 3
 # (Optional) Write a short (~150 characters) description of this featured tag.
 description: >
-  spring-list-test
+  프레임 워크 알아가기
 
 # (Optional) You can disable grouping posts by date.
 # no_groups: true

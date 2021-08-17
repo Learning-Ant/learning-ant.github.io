@@ -6,7 +6,8 @@ description: >
   이를 해결하기 위해 작성하는 포스팅
 hide_description: false
 sitemap: false
-category: spring
+category: framework
+tag: [spring]
 ---
 
 ## [Spring]Spring-Tool-Suite에서 Import하기
