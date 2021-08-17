@@ -55,8 +55,8 @@ author:
 menu:
   - title: Daily Life
     url: /daily-life/
-  - title: Spring
-    url: /spring/
+  - title: Framework
+    url: /framework/
   - title : React
     url: /react/
   - title: Language
