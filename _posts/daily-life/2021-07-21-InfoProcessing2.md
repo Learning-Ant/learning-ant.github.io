@@ -72,10 +72,10 @@ tag: [blog]
 
 결국 노트에 적어둔 내용들을 다시 찾아보고, 이를 엑셀로 정리해두기로 했다. 이렇게 다시 정리하면서 모든 내용들을 다시 한 번 보고, 시험장 직전에도 볼 수 있도록 하기 위함이었다.
 
-![공책](/assets/img/daily_life/InformationProcessing/InfoProc8.png)
+![용어 정리](/assets/img/daily_life/InformationProcessing/InfoProc8.png)
 {:.lead loading="lazy" align="center"}
 
-> 디자인 패턴 중 행위 패턴에 대한 정리
+> 핵심 용어에 대한 정리
 {:.figcaption}
 
 위처럼 많은 개념들을 과목 순서대로 정리해 엑셀로 만들어 두었다. 최대한 핵심 단어들이 들어갈 수 있도록 정리했으며, 조금 이해가 힘들게 설명되어 있는 부분들도 다듬어 내가 봤을 때 편한 문장구성을 이룰 수 있도록 했다. 또 옆에는 수제비의 `두음쌤`이 제공하는 암기법을 기록해두어 개념들이 떨어져 기억되지 않고 묶여서 기억될 수 있도록 했다.
