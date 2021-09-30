@@ -1,10 +1,10 @@
 ---
 layout: tag-list
 type: tag
-title: C#.Net
-slug: dotnet
+title: MyBatis
+slug: mybatis
 category: framework
 sidebar: true
 description: >
-  .Net Framework
+  MyBatis Framework
 ---
